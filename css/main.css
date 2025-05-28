@@ -1,0 +1,2030 @@
+/* Example color palette (adjust to meet WCAG AA contrast): */
+:root {
+  --primary-focus: #4100B3; /* Dark purple background */
+  --primary-wh-bg: #ffffff;
+  --primary-text: #000000; /* White text on dark background */
+  --light-bg: #F8F5FF; /* Light background for sections */
+  --dark-text: #000000; /* Dark text color */
+  --accent-color: #F8F5FF; /* Another purple shade for hover/focus states */
+  --urgent-text: #b91c1c; /* Example red for "urgent" label */
+  --placeholder-text: #595959;
+  --registered-status: #DCFAE6;
+  --registered-status-text: #065B38;
+  --pending-status-text: #893606;
+  --pending-status: #FEF0C7;
+  --disabled-btn-bg: #E4E4E4;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: var(--light-bg);
+  color: var(--dark-text);
+  line-height: 1.5; 
+}
+
+
+/* Navigation (sidebar) */
+nav {
+  width: 300px;
+  background-color: var(--primary-wh-bg);
+  color: var(--primary-text);
+  min-height: 100vh; /* Full-height sidebar */
+  padding-top: 1rem;
+  position: fixed; /* Keep sidebar fixed on the left */
+  top: 0;
+  left: 0;
+  font-size: 24px;
+}
+
+.logo-container {
+  text-align: center; /* This ensures the logo inside is centered horizontally */
+  margin:0;     /* optional spacing above/below logo */
+}
+
+.logo-container .logo {
+  display: inline-block; /* ensures text-align: center works properly */
+  width: 150px; 
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-item a {
+  display: flex;            /* Arrange icon and text in a row */
+  align-items: center;      /* Vertically center them */
+  gap: 1.5rem; 
+  color: var(--primary-text);
+  text-decoration: none;
+  padding: 1rem;
+}
+
+
+.nav-item a img {
+  padding-left: 1rem;
+}
+
+.nav-item a.active,
+.nav-item a:hover,
+.nav-item a:focus {
+  background-color: var(--accent-color);
+  outline: none;
+  color: var(--primary-focus);
+  border-radius: 8px;
+  transform: scale(0.97);
+  
+
+}
+
+.nav-item a:focus {
+  outline: 2px solid #4c268c;  /* visible focus outline */
+  outline-offset: 2px;
+}
+
+.nav-item a.active .icon-dashboard, 
+.nav-item a:hover .icon-dashboard {
+  content: url('../icons/dashboard-hover.png');
+}
+
+.nav-item a.active .icon-calender,
+.nav-item a:hover .icon-calender {
+  content: url('../icons/calendar-hover.png');
+}
+
+.nav-item a.active .icon-accomodation ,
+.nav-item a:hover .icon-accomodation {
+  content: url('../icons/accomodation-hover.png');
+}
+
+.nav-item a.active .icon-exam-registration,
+.nav-item a:hover .icon-exam-registration {
+  content: url('../icons/examregistration-hover.png');
+}
+
+.nav-item a.active .icon-my-exams,
+.nav-item a:hover .icon-my-exams {
+  content: url('../icons/myexam-hover.png');
+}
+
+.nav-item a.active .icon-help,
+.nav-item a:hover .icon-help {
+  content: url('../icons/help-hover.png');
+}
+
+/* HEADER */
+.top-header {
+  top: 0;
+  margin-left: 300px; /* same as sidebar width */
+  right: 0;
+  background-color:var(--light-bg);
+  color: #000000;
+  padding: 1rem;
+  z-index: 999;
+}
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.header-left {
+  flex: 1;
+}
+.header-middle {
+  flex: 1;
+  text-align: center;
+  position: relative; /* Required for absolute button positioning */
+}
+.header-right {
+  position: relative;   /* ← added */
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1.5rem;
+  
+}
+.welcome-heading {
+  margin: 0;
+  font-size: 32px;
+  margin-left: .5em;
+  font-weight: lighter;
+}
+
+/* Search bar */
+.header-middle input[type="search"] {
+  background: url('../icons/search.png') no-repeat 8px center;
+  background-size: 24px 24px;   /* scale the icon if necessary */
+  background-color: var(--primary-wh-bg);
+  
+  /* Add left padding so the text doesn’t overlap the icon */
+  padding-left: 4rem;
+  padding-right: 3.5rem; /* make text stays away from the clear button */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+
+  /* Ensure good contrast, borders, etc. as needed */
+  width: 470px;      /* matches Figma's fixed width */
+  height: 50px;      /* matches Figma's fixed height */
+  box-sizing: border-box;
+  font-size: 18px;
+}
+/* 2) Focus state */
+.header-middle input[type="search"]:focus {
+  outline: 2px solid #4c268c; /* visible outline for WCAG compliance */
+}
+
+.header-middle input[type="search"]::placeholder {
+  color: var(--placeholder-text);   /* ensure readable contrast */
+  opacity: 1;
+}
+
+
+/* Vendor-specific fallback (optional) */
+.header-middle input[type="search"]:-ms-input-placeholder {
+  color:var(--placeholder-text);
+  opacity: 1;
+}
+.header-middle input[type="search"]::-ms-input-placeholder {
+  color: var(--placeholder-text);
+  opacity: 1;
+}
+.header-middle input[type="search"]:-moz-placeholder {
+  color: var(--placeholder-text);
+  opacity: 1;
+}
+.header-middle input[type="search"]::-moz-placeholder {
+  color: var(--placeholder-text);
+  opacity: 1;
+}
+.header-middle input[type="search"]::-webkit-input-placeholder {
+  color: var(--placeholder-text);
+  opacity: 1;
+}
+/* Clear button style (next to search input) */
+.search-clear-btn {
+  position: absolute;
+  right: .25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--placeholder-text);
+  cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#searchExamRegistration {
+  padding-right: 3.25em; /* Enough space for the clear button */
+  box-sizing: border-box;
+}
+#searchExams {
+  padding-right: 3.25em; /* Enough space for the clear button */
+  box-sizing: border-box;
+}
+
+.search-clear-btn:hover,
+.search-clear-btn:focus {
+  color: var(--primary-focus);
+  outline: 2px solid var(--primary-focus);
+  outline-offset: 2px;
+  background-color: var(--accent-color);
+  border-radius: 8px;
+}
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+}
+
+
+/* Notification bell button */
+button.notification-bell {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+button.notification-bell:hover,
+button.notification-bell:focus {
+  outline: 2px solid var(--primary-focus);          /* ← use white instead of purple */
+  outline-offset: 2px;
+  background: var(--accent-color);  
+  border-radius: 8px;
+}
+
+.notification-bell img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+  
+.search-bar input[type="search"] {
+  padding: 0.5rem;
+}
+
+.student-profile {
+  display: flex;
+  align-items: center;
+  gap: .5rem; /* space between image and text */
+  flex-direction: row;
+}
+
+.student-profile img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+
+/* Force the two lines of text to stack vertically */
+.profile-text {
+  display: flex;
+  flex-direction: column; /* stack spans vertically */
+  line-height: 1.5;      
+}
+
+.student-fullname {
+  font-size: 14px;
+}
+
+.student-id {
+  font-size: 14px;
+  font-weight: lighter;
+}
+
+
+/* MAIN CONTENT WRAPPER */
+.content-wrapper {
+  /* Push content below the fixed header’s height */
+  margin-left: 300px;  /* width of sidebar */
+  padding: 1rem 1rem;
+  overflow: visible; /* Ensure the parent container does not clip the table */
+  position: relative;
+}
+
+.content-wrapper section[aria-labelledby="dashboard-overview"] p {
+  font-size: 24px;          
+  color: var(--primary-wh-bg);              /* ensure sufficient contrast with the background */
+  line-height: 1.25rem;
+  margin: 1rem 1rem;
+  padding: 1rem 1.5rem;           
+  font-weight: 400;         /* normal text weight */
+  text-align: left; 
+  background-color: var(--primary-focus);
+  border-radius: 8px;        
+}
+
+.exam-section-header {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  border-bottom: 1.5px solid #CED8E5; /* Adjust color and thickness */
+  margin-left: 1rem;
+  margin-right: 1rem;
+  
+}
+
+.section-icon {
+  width: 30px;             
+  height: 30px;
+  object-fit: contain;
+  /* Remove any extra margin if needed */
+  margin-left: .75rem;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  flex-grow: 1;
+  margin: .5rem;
+  font-size: 24px;
+   
+}
+
+.view-all-link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  font-size: 20px;
+  min-width: 44px;     
+  min-height: 44px;
+  color: var(--primary-focus); 
+  transition: background-color 0.3s ease, 
+  color 0.3s ease, 
+  transform 0.2s ease, 
+  box-shadow 0.2s ease,
+  border-color 0.3s ease;
+}
+.view-all-link:hover,
+.view-all-link:focus{
+  transform: scale(1.03);                   /* Slight enlargement */
+  text-decoration: none;  
+}
+
+/* Additional focus indicator for keyboard users */
+.view-all-link:focus {
+  outline: 2px solid var(--primary-focus);
+  outline-offset: 1.5px;
+  box-shadow: 0 0 0 3px rgba(var(--primary-focus-rgb), 0.5); 
+}
+
+/* Control the image (chevron) specifically */
+.icon-chevron {
+  margin-left: 0.25rem; /* adds space between text and icon */
+  width: 33px;  /* Control the size as needed */
+  height: 28px; /* Maintain aspect ratio */
+  object-fit: contain; /* Keeps the aspect ratio of the icon file */
+}
+.table-container {
+  overflow-x: auto; /* Allow horizontal scrolling if needed */
+  margin: 1rem 1rem 1rem 0; /* Match the margin of the dashboard overview */
+  border-radius: 8px; /* Add rounded corners */
+  overflow: visible; /* or auto, but not hidden */
+  padding: 0;
+  font-size: 16px;
+  
+}
+/* TABLE STYLE-TWO: Custom styles for the dashboards tables */
+.style-two {
+  width: 100%; /* Full width inside the container */
+  border-collapse: separate; /* Allows border-radius to work */
+  border-spacing: 0; /* Removes gaps between cells */
+  
+}
+
+.style-two tbody tr:nth-child(odd) {
+  background-color:#F4F6F7; /* Light gray for odd rows */
+}
+/* Odd rows */
+.style-two tbody tr:nth-child(even) {
+  background-color: var(--accent-color); /* Light gray for odd rows */
+}
+
+.style-two tbody tr td:nth-child(1), /* First column */
+.style-two thead tr th:nth-child(1) {
+  width: 45%; /* Adjust width as needed */
+  padding-left: 4.5rem;
+}
+
+.style-two tbody tr td:nth-child(2), /* Second column */
+.style-two thead tr th:nth-child(2) {
+  width: 40%; /* Adjust width as needed */
+}
+
+.style-two tbody tr td:nth-child(3), /* Third column */
+.style-two thead tr th:nth-child(3) {
+  width: 15%; /* Adjust width as needed */
+  text-align: center;
+}
+.style-two th,
+.style-two td {
+  padding: 0.75rem;
+  text-align: left;
+  vertical-align: middle;
+  
+}
+
+.style-two th { 
+  font-weight: 400;
+}
+.exam-icon {
+  width: 16px; /* Adjust size as needed */
+  height: 16px;
+  margin-left: 1rem; /* Add spacing between text and icon */
+  margin-right: .5rem;
+  
+}
+
+.btn {
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  position: relative;   
+}
+.btn::before {
+  content: '';
+  position: absolute;
+  top: -10px;    /* expand hit area 10px up */
+  bottom: -10px; /* ...down */
+  left: -10px;   /* ...left */
+  right: -10px;  /* ...right */ 
+}
+
+a.btn {
+  text-decoration: none;
+}
+
+.register-btn {
+  background-color:var(--primary-focus); /* Example green for register */
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 112px;
+  height: 44px;   
+}
+
+.register-btn:hover,
+.register-btn:focus {
+  background-color: #ffffff;
+  color: var(--primary-focus);
+  outline: 1px solid #4100B3;
+}
+
+.deregister-btn {
+  background-color: var(--primary-focus); /* Example orange for deregister */
+  color: #fff;
+  padding: 0.5rem;
+  width: 112px;
+  height: 44px;
+}
+
+.deregister-btn:hover,
+.deregister-btn:focus {
+  background-color: #ffffff;
+  color: var(--primary-focus);
+  outline: 1px solid #4100B3;
+}
+
+.exam-urgent {
+  font-weight: bold;
+}
+
+.exam-upcoming {
+  font-style: italic;
+}
+
+/* HELP PAGE SECTION */
+
+/* Main institute section container */
+.institute-section {
+  background-color:var(--primary-wh-bg);
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Main Title */
+.institute-title {
+  margin-top: 0;
+  font-size: 28px;
+  margin-bottom: 1rem;
+}
+
+/* ROWS: Each row has 2 columns side by side */
+.row {
+  display: flex;
+  gap: 2rem;          /* spacing between columns */
+  margin-bottom: 2rem;/* space below each row */
+}
+
+/* Each column can grow/shrink; min width ensures they wrap on narrow screens */
+.column {
+  flex: 1 1 200px;
+  margin-left: 6rem;
+}
+
+/* Subheadings for each content block */
+.col-heading {
+  margin: 1rem 0 0.5rem;
+  font-size: 1.125rem;
+  font-weight: bold;
+}
+/* Override default browser styling for <address> */
+address {
+  font-style: normal; /* Remove italic styling */
+}
+/* Icon + text alignment (address-row, info-row, etc.) */
+.address-row,
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.address-text,
+.info-text {
+  line-height: 1.4;
+  font-size: 1rem;
+}
+.info-text .highlight {
+  font-weight: 600; 
+}
+
+/* Icon styling (same size for address, email, location, phone, etc.) */
+.address-icon,
+.email-icon,
+.location-icon,
+.phone-icon {
+  width: 20px; 
+  height: 20px;
+  object-fit: contain;
+}
+/* Help.html  */
+.email-icon + a[href^="mailto"] {
+  display: inline-flex;        /* become a flex container */
+  box-sizing: border-box;      /* include padding in the size */
+  min-width: 44px;             /* guarantee at least 44×44 CSS pixels */
+  min-height: 44px;
+  padding: 0 0.5rem;           /* small left/right breathing room */
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Link styling */
+.institute-section a { 
+  text-decoration: none;
+}
+.institute-section a:hover,
+.institute-section a:focus {
+  text-decoration: underline;
+}
+/* End of Help Page Section */
+
+
+/* The main accommodations container */
+.accommodation-section {
+  background-color: #f9f9f9; /* ensure contrast with text */
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Each sub-section (article) within the accommodations */
+.accommodation-group {
+  margin-bottom: 2rem; /* spacing between groups */
+}
+
+/* Specific background color for the first and third sections */
+.accommodation-group:nth-of-type(1),
+.accommodation-group:nth-of-type(3) {
+  background-color: var(--accent-color); /* Different color for these sections */
+}
+
+/* Default background for other sections */
+.accommodation-group {
+  background-color: #f9f9f9; /* Default background color */
+}
+
+/* Subheading for each accommodation category */
+.accommodation-subheading {
+  margin: 1rem 0 0.5rem;
+  font-size: 28px;  
+  font-weight: 600;
+}
+
+/* Unordered list for bullet points (technology accommodations, etc.) */
+.accommodation-list {
+  list-style: disc;
+  margin: 0.5rem 1.5rem;  /* indent the bullets a bit */
+  padding: 0;
+}
+
+/* Individual list items */
+.accommodation-list li {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+  font-size: 24px;
+  margin-left: 1em;
+}
+
+.accommodation-list li img {
+  width: 20px;
+  height: 20px; 
+  margin-left: .5rem;
+
+}
+
+/* Strong text (like "Laptop Usage:" or "Math Exams:") */
+.accommodation-group strong {
+  font-weight: 600;  
+}
+/* End of Accomodation style*/
+
+/* My Exams Section Container */
+.my-exams-section {
+  background-color: var(--primary-wh-bg);
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Main Heading */
+.my-exams-heading {
+  margin-top: 0;
+  font-size: 24px;
+  margin-bottom: 2rem;
+}
+/* Style for the search section */
+.search-section {
+  display: flex;
+  justify-content: flex-end; /* Align to the right */
+  align-items: center; /* Center vertically */
+  margin-bottom: 1rem; /* Add spacing below */
+  margin-right: 1rem;
+  position: relative;
+  
+}
+
+.search-section input[type="search"] {
+  background: url('../icons/search.png') no-repeat 8px center; /* Add search icon */
+  background-size: 20px 20px; /* Scale the icon */
+  background-color: var(--primary-wh-bg);
+  padding: 0.75rem; 
+  padding-left: 48px;
+  font-size: 1rem; /* Match font size with the header */
+  border: 1px solid #ccc; /* Add a border */
+  border-radius: 8px; /* Rounded corners */
+  width: 280px; /* Set a fixed width */
+  max-width: 100%; /* Ensure responsiveness */
+  height: 44px; 
+}
+
+.search-section input[type="search"]:focus {
+  outline: 1px solid var(--primary-focus); /* Add focus outline for accessibility */
+  outline-offset: 1px;
+}
+
+
+/* TABLE STYLE-ONE: Custom styles for the exam table */
+.style-one {
+  width: 100%;
+  border-collapse: separate; /* Allows border-radius to work */
+  border-spacing: 0; /* Removes gaps between cells */
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+
+.style-one th,
+.style-one td {
+  padding: 1.5rem 0.5rem;
+  border-bottom: 1px solid #ccc;; 
+  text-align: left;
+  font-size: 16px;
+}
+
+.style-one th {
+  font-weight: 600;
+}
+
+/* Remove the bottom border for the last row */
+.style-one tbody tr:last-child td {
+  border-bottom: none; /* Remove the bottom border */
+}
+
+/* Optional zebra striping */
+.style-one tbody tr:nth-child(even) {
+  background-color: var(--primary-wh-bg);
+}
+.style-one tbody tr:nth-child(odd) {
+  background-color: var(--primary-wh-bg);
+}
+
+/* Set specific widths for columns in the style-one table */
+.style-one th:nth-child(1),
+.style-one td:nth-child(1) {
+  width: 9%; /* Adjust width for the first column */
+
+}
+
+.style-one th:nth-child(2),
+.style-one td:nth-child(2) {
+  width: 20%; /* Adjust width for the second column */
+}
+
+.style-one th:nth-child(3),
+.style-one td:nth-child(3) {
+  width: 11%; /* Adjust width for the third column */
+}
+.style-one th:nth-child(4),
+.style-one td:nth-child(4) {
+  width: 13%; /* Adjust width for the third column */
+}
+.style-one th:nth-child(5),
+.style-one td:nth-child(5) {
+  width: 12%; /* Adjust width for the third column */
+}
+.style-one th:nth-child(6),
+.style-one td:nth-child(6) {
+  width: 12%; /* Adjust width for the third column */
+}
+
+.style-one th:nth-child(7),
+.style-one td:nth-child(7) {
+  width: 15%; /* Adjust width for the third column */
+}
+.style-one th:nth-child(8),
+.style-one td:nth-child(8) {
+  width: 8%; /* Adjust width for the third column */
+}
+
+
+/* Override size for deregister button in style-one table */
+.style-one .btn.deregister-btn {
+  width: 94px; /* Set a specific width */
+  padding: 0.75rem .5rem 0.75rem .5rem;
+  font-size: 16px;
+}
+.btn:disabled {
+  background-color: var(--disabled-btn-bg); /* Gray background */
+  color: var(--dark-text); 
+  cursor: not-allowed; /* Show "not allowed" cursor */
+  
+}
+
+/* Status Badge Styling */
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 14px;
+}
+
+.status-badge.registered {
+  background-color: var(--registered-status);
+  color: var(--registered-status-text);
+}
+.status-badge.pending {
+  background-color: var(--pending-status);
+  color: var(--pending-status-text);
+}
+.pending-status-icon,
+.registered-status-icon {
+  width: 10px; /* Set the desired width */
+  height: 10px; /* Set the desired height */
+  margin-right: .25rem;
+}
+
+
+
+/* Focus Style for Interactive Elements */
+.btn:focus,
+.status-badge:focus,
+th:focus,
+td:focus {
+  outline: 2px solid #4c268c;
+  outline-offset: 2px;
+}
+
+/* End of My Exams Section Container */
+
+/* Exam registration container*/
+
+.exam-registration-section {
+  background-color: var(--primary-wh-bg);
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+
+/* Main Heading */
+.exam-registration-heading {
+  margin-top: 0;
+  font-size: 24px;
+  margin-bottom: 2rem;
+}
+.exam-registration-table th:nth-child(1),
+.exam-registration-table td:nth-child(1) {
+  width: 9%; /* Adjust the width for the Lecturer column */
+}
+.exam-registration-table th:nth-child(2),
+.exam-registration-table td:nth-child(2) {
+  width: 20%; /* Adjust the width for the Lecturer column */
+}
+
+.exam-registration-table th:nth-child(3),
+.exam-registration-table td:nth-child(3) {
+  width: 4%; /* Adjust the width for the Lecturer column */
+}
+
+.exam-registration-table th:nth-child(4),
+.exam-registration-table td:nth-child(4) {
+  width: 4%; /* Adjust the width for the Lecturer column */
+}
+
+.exam-registration-table th:nth-child(5),
+.exam-registration-table td:nth-child(5) {
+  width: 20%; /* Adjust the width for the Lecturer column */
+}
+.exam-registration-table th:nth-child(6),
+.exam-registration-table td:nth-child(6) {
+  width: 13%; /* Adjust the width for the Lecturer column */
+}
+
+.exam-registration-table th:nth-child(7),
+.exam-registration-table td:nth-child(7) {
+  width: 15%; /* Adjust the width for the Lecturer column */
+}
+.exam-registration-table th:nth-child(8),
+.exam-registration-table td:nth-child(8) {
+  width: 12%; /* Adjust the width for the Lecturer column */
+}
+
+/* Button Styling for Exam Registration */
+.view-register-btn {
+  background-color: var(--primary-focus); /* Same as the deregister button */
+  color: #fff; /* White text */
+  border: none;
+  border-radius: 4px; /* Rounded corners */
+  padding: 0.75rem .5rem; /* Adjust padding */
+  font-size: 16px; /* Match font size */
+  cursor: pointer;
+  
+}
+
+.view-register-btn:hover,
+.view-register-btn:focus {
+  background-color: #ffffff; /* White background on hover */
+  color: var(--primary-focus); /* Primary focus color for text */
+  outline: 1px solid var(--primary-focus); /* Add focus outline */
+}
+
+/* Disabled Button Styling */
+.view-register-btn:disabled {
+  background-color: var(--disabled-btn-bg); /* Grey background for disabled state */
+  color: var(--dark-text); /* Dark text color */
+  cursor: not-allowed; /* Show "not allowed" cursor */
+}
+
+.view-registre-btn1 {
+  background-color: var(--primary-focus); /* Same as the deregister button */
+  color: #fff; /* White text */
+  border: none;
+  border-radius: 4px; /* Rounded corners */
+  padding: 0.75rem .5rem; /* Adjust padding */
+  cursor: pointer;
+  text-decoration: none; /* Remove underline */
+  font-size: 14px; /* Adjust font size */
+  display: inline-block; /* Ensure proper spacing */
+  text-align: center; /* Center text */
+}
+
+.exam-registration-table .view-registre-btn1:hover,
+.exam-registration-table .view-registre-btn1:focus {
+  background-color: #ffffff !important; /* White background on hover */
+  color: var(--primary-focus) !important; /* Primary focus color for text */
+  outline: 1px solid var(--primary-focus) !important; /* Add focus outline */
+}
+
+/* Status Badge Styling for Not Registered */
+.status-badge.not-registered {
+  background-color: var(--disabled-btn-bg); /* Light grey background */
+  color: #3F3748; /* Dark grey text */
+  border-radius: 16px; /* Rounded corners */
+  padding: 0.25rem 0.5rem; /* Adjust padding */
+  display: inline-block;
+  font-size: 14px; /* Match font size */
+}
+
+.status-badge.not-registered img {
+  width: 9px; 
+  height: 9px; 
+}
+
+.not-registered-status-icon {
+  width: 10px; /* Icon width */
+  height: 10px; /* Icon height */
+  margin-right: 0.25rem; /* Space between icon and text */
+}
+
+/* End of Exam Registration container*/
+
+/*Start of Calendar section*/
+
+/* Calendar Section Container */
+.calendar-section {
+  border-radius: 8px; /* Rounded corners */
+  padding: 0 2rem; /* Add padding inside the section */
+  
+}
+
+/* CALENDAR HEADER: date navigation & day/week/month toggles */
+.calendar-header {
+  display: flex; /* Align items horizontally */
+  justify-content: space-between; /* Space out navigation and view toggles */ 
+  background-color: var(--primary-wh-bg);
+  position: relative; /* Ensure stacking context is applied */
+  z-index: 20; /* Set a higher z-index to keep it above the weekend elements */
+}
+
+.calendar-nav {
+  display: flex; /* Align items horizontally */
+  align-items: center; /* Vertically center the buttons and date */
+  gap: .75rem; /* Add spacing between the buttons and the date */
+}
+
+/* Left side: date nav or next/prev arrows + month name */
+.calendar-nav-btn {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0.5rem .75rem;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.calendar-nav-btn:hover,
+.calendar-nav-btn:focus {
+  outline: 2px solid var(--primary-focus); /* strong purple line */
+  outline-offset: 2px;
+  transform: scale(1.02);
+  box-shadow: 0 0 0 1px var(--primary-focus);
+}
+
+.calendar-current-date {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Right side: toggle buttons for day/week/month */
+.calendar-view-buttons {
+  display: flex;
+}
+
+.view-toggle {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0.5rem 1rem;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* If a view is "active" (aria-pressed="true"), style differently */
+.view-toggle[aria-pressed="true"] {
+  background-color: #4100B3;
+  color: #fff;
+  border-color: #4100B3;
+  z-index: 1; /* Default z-index for all views */
+  position: relative; 
+}
+
+.view-toggle:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 0 1px var(--primary-focus);
+  outline: none; /* Remove default focus outline */
+}
+
+.view-toggle:focus {
+  outline: 2px solid var(--primary-focus); /* strong purple line */
+  outline-offset: 2px;
+  box-shadow: 0 0 0 1px var(--primary-focus);
+}
+
+/* Hide or show the different calendar views */
+.calendar-view {
+  display: block; 
+
+}
+
+.calendar-view[aria-hidden="false"] {
+  display: block; /* Show the active view */
+  z-index: 10; /* Bring the active view to the front */
+}
+
+/* MONTHLY TABLE */
+.calendar-table {
+  width: 100%; /* Ensure the table takes up the full width of its container */
+  table-layout: fixed;  /* Prevent the table from exceeding the container's width */
+  border-collapse: collapse; /* Merge borders */
+  background: #fff; /* White background for the table */
+  border-radius: 8px; /* Rounded corners */
+  margin: 0 auto; /* Center the table horizontally */
+}
+
+.calendar-table th{
+  padding: 1rem; /* Adjust padding for consistent spacing */
+  border: 1px solid #ddd; /* Add a light border */
+  text-align: center; /* Center-align the text */
+  vertical-align: top; /* Align content to the top */
+  width: 14.28%; /* Ensure 7 equal columns for the week */
+  min-height: 169px; /* Set a minimum height for cells */
+  box-sizing: border-box; /* Include padding in width/height calculations */
+  position: relative;
+}
+.calendar-table td{
+  width: 186px;                /* Fixed width (from Figma design) */
+  height: 169px;               /* Fixed height (from Figma design) */
+  border: 1px solid #ddd; /* Add a light border */
+  position: relative;
+}
+
+/* Style for the entire weekend column (Saturday and Sunday) */
+.calendar-table th.weekend,
+.calendar-table td.weekend {
+  background-color: #F7F7F7; /* Light grey background */
+  position: relative;
+  z-index: 0; 
+}
+
+/* The date number in each cell */
+.date-num {
+  position: absolute; /* Position the date number absolutely */
+  top: 0.5rem; /* Adjust vertical alignment */
+  right: 0.5rem;
+  margin-bottom: 0.25rem;
+  text-align: right;
+  font-size: 12px;
+  z-index: 1;
+}
+
+/* =========================== */
+/*      CALENDAR EVENTS FIX   */
+/* =========================== */
+
+.calendar-event {
+  position: absolute;
+  display: block;
+  padding: 6px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 6px;
+  box-sizing: border-box;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  z-index: 9;
+  overflow: hidden;
+  text-decoration: none;
+  line-height: 1.2;
+  max-width: 100%;
+}
+
+/* =========================== */
+/*       POSITION LOGIC        */
+/* =========================== */
+
+/* Month view: stack vertically with spacing */
+.month-table td {
+  position: relative;
+}
+
+.month-table th {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.month-table td.today .date-num {
+  background-color: var(--primary-focus);
+  color: white;
+  border-radius: 50%;
+  width: 1.5em; height: 1.5em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  line-height: 1;
+  margin: 0; /* no extra offset */
+}
+
+.month-table td .calendar-event {
+  position: relative;
+  display: block;
+  margin-top: 4px;
+  width: 100%;
+  left: 0;
+  right: 0;
+  top: unset;
+}
+.calendar-event .event-label {
+  display: block;
+  font-size: 10px;
+  margin-bottom: 2px;
+  color: inherit; /* inherits from .exam-date/.registration-deadline/.deregistration-deadline */
+}
+
+/* Course name (e.g. “Programming in Python II”) */
+.calendar-event .event-course {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: inherit;
+}
+/* =========================== */
+/*   CATEGORY COLOR STYLES    */
+/* =========================== */
+
+.registration-deadline {
+  background-color: rgba(254, 228, 226, 0.2);
+  color: #901C14;
+  border-left: #F04438 5px solid;
+}
+
+.deregistration-deadline {
+  background-color: rgba(254, 240, 199, 0.2);
+  color: #893606;
+  border-left: 5px solid #F79009;
+}
+
+.exam-date {
+  background-color: rgba(220, 250, 230, 0.2);
+  color: #065B38;
+  border-left: 5px solid #17B26A;
+}
+.more-events {
+  background: rgba(209,224,255,0.2);
+  color: #003AAD;
+  border-left: 5px solid #004EEB;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: left;
+}
+
+
+/* Hover + Focus */
+.calendar-event:hover,
+.calendar-event:focus {
+  outline: none;
+  transform: scale(1.02);
+  box-shadow: 0 0 0 1px #4100B3;
+  z-index: 10;
+}
+
+/* End of Month section */
+
+.week-table {
+  width: 100%;
+  border-collapse: collapse;    /* merges borders for a consistent grid line */
+  table-layout: fixed;         /* columns have fixed widths */
+  background-color: #fff;      /* White background for the table */
+}
+
+.week-table thead {
+  background-color: #f9f9f9;   /* Light gray for the header row */
+}
+
+.week-table thead :first-child { 
+background-color: var(--primary-wh-bg);
+}
+
+.week-table th,
+.week-table td {
+  height: 50px; /* Set fixed height */
+  border: 1px solid #eee;      /* Faint grid lines */
+  text-align: left;            
+  vertical-align: top;
+  padding: 0.25rem;
+  box-sizing: border-box; 
+}
+
+.week-table th {
+  text-align: center; /* Center text horizontally */
+  vertical-align: middle; /* Center text vertically */ 
+  align-items: center; /* Vertically center content */
+  justify-content: center; /* Horizontally center content */
+  font-size: 14px;
+  font-weight: 600; 
+}
+
+.week-table th.today .today-date-number {
+  background-color: var(--primary-focus);
+  color: white;
+  border-radius: 50%;
+  width: 1.5em; height: 1.5em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  margin: 0; /* no extra offset */
+}
+
+.week-table td {
+  position: relative;
+  padding: .25rem;
+}
+
+/* The first column: time column should be narrower*/
+.week-table td.time-column,
+.week-table th.time-column {
+  width: 43px;
+  background-color: var(--primary-wh-bg);
+  font-size: 12px;
+}
+
+.week-table thead .time-column {
+  border: none;    
+}
+
+.week-table tbody .time-column {
+  border: none;  
+}
+
+/* Weekend columns*/
+.week-table .weekend {
+  background-color: #fcfcfc; 
+}
+
+
+/*  End of week view calendar*/
+
+/* General styles for the day view */
+.day-table {
+  width: 100%;
+  border-collapse: collapse; /* Remove gaps between table cells */
+  table-layout: fixed; /* Fixed layout for consistent widths */
+  background-color: #fff; /* White background for the table */
+}
+
+.day-table th {
+  text-align: left;
+  padding: 0.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+}
+
+.day-table .time-column {
+  width: .50%; /* Narrower column for time */
+  background-color: var(--primary-wh-bg); /* Slightly different background for the time column */
+  text-align: left;
+  padding-right: 0.5rem;
+  font-size: 12px;
+  color: #333;
+}
+
+.day-table tbody .time-column {
+  border: none; 
+}
+
+.day-table .day-column {
+  width: 90%; /* Wider column for events */
+  padding: 0.5rem;
+  font-size: 1rem;
+  color: #333;
+}
+
+.day-table td {
+  height: 50px; /* Fixed height for each time slot */
+  border: 1px solid #eee; /* Light border for grid lines */
+  vertical-align: top;
+  padding: 0.25rem;
+  box-sizing: border-box;
+}
+
+.day-column {
+  position: relative;        /* container for its own events */
+}
+
+.day-table .calendar-event:hover,
+.day-table .calendar-event:focus {
+  transform: none; /* Remove scaling */
+  box-shadow: 0 0 0 1px var(--primary-focus); /* Remove box shadow */ 
+  z-index: 10; /* Ensure the event is above other elements */
+}
+
+
+/* End of the day view */
+
+[data-section] {
+  display: block;
+}
+
+[data-section][style="display: none;"] {
+  display: none !important;
+}
+
+.sort-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5em;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: left;
+  padding: 0;
+  min-height: 44px;
+
+}
+
+.sort-icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;             /* ← keep it from ever shrinking */
+  background-image: url('../icons/order-B.png');
+  background-size: contain;
+  transition: transform 0.2s;
+  background-repeat: no-repeat;
+  vertical-align: middle;
+}
+
+.sort-btn[aria-sort="ascending"] .sort-icon {
+  transform: rotate(180deg);
+}
+
+.sort-btn[aria-sort="descending"] .sort-icon {
+  transform: rotate(0deg);
+}
+/* when the columnheader is ascending… */
+th[aria-sort="ascending"] .sort-icon {
+  transform: rotate(180deg);
+}
+
+/* when it’s descending… */
+th[aria-sort="descending"] .sort-icon {
+  transform: rotate(0deg);
+}
+
+/*Notification and pop question part*/
+.hidden { display: none; }
+/* ───────────────────────────────────────────────────────────
+   CONFIRM / CANCEL BUTTONS IN THE DIALOG
+   Give them separate, high-contrast hover/focus styles
+   ─────────────────────────────────────────────────────────── */
+
+/* Confirm (Yes) button */
+#confirmYes {
+  background-color: var(--primary-focus);
+  color: #fff;
+  border: none;
+}
+
+/* Cancel (No) button */
+#confirmNo {
+  background-color: var(--disabled-btn-bg);
+  color: var(--dark-text);
+  border: none;
+}
+
+/* “Yes, deregister” = only invert on hover, ring on focus */
+#confirmYes:hover {
+  background-color: #fff;
+  color: var(--primary-focus);
+}
+#confirmYes:focus {
+  outline: 2px solid var(--primary-focus);
+  outline-offset: 2px;
+}
+
+/* “Cancel” = only darken on hover, ring on focus */
+#confirmNo:hover {
+  background-color: var(--primary-wh-bg);
+}
+#confirmNo:focus {
+  outline: 2px solid var(--dark-text);
+  outline-offset: 2px;
+}
+
+/* Center the deregistration confirm box inside the content-wrapper */
+#confirmDereg {
+  position: fixed !important; /* pin to viewport */
+  top:       30%      !important;
+  left:      50%      !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+dialog::backdrop {
+  background: rgba(0,0,0,0.4);
+}
+dialog h2 {
+  margin-top: 0;
+}
+dialog menu {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+/* end of notification and popup question section */
+
+/*start of course detail style*/
+
+.course-info-table th:nth-child(1),
+.course-info-table td:nth-child(1) {
+  width: 15%; /* Adjust the width for the Lecturer column */
+}
+
+.course-info-table th:nth-child(2),
+.course-info-table td:nth-child(2) {
+  width: 10%; /* Adjust the width for the Lecturer column */
+}
+
+.course-info-table th:nth-child(3),
+.course-info-table td:nth-child(3) {
+  width: 10%; /* Adjust the width for the Lecturer column */
+}
+
+.course-info-table th:nth-child(4),
+.course-info-table td:nth-child(4) {
+  width: 10%; /* Adjust the width for the Lecturer column */
+}
+
+.course-info-table th:nth-child(5),
+.course-info-table td:nth-child(5) {
+  width: 15%; /* Adjust the width for the Lecturer column */
+}
+
+.course-info-table th:nth-child(6),
+.course-info-table td:nth-child(6) {
+  width: 40%; /* Adjust the width for the Lecturer column */
+}
+
+.btn.back-button {
+  width: 123px; /* Adjust the size of the icon */
+  height: 44px;
+  background-color: var(--light-bg);
+  color: var(--primary-focus);
+  border-radius: 16px;
+  border: var(--primary-focus) 2px solid;
+  display: inline-flex;
+  padding: .75rem ;
+  font-size: 16px;
+}
+.btn.back-button:hover,
+.btn.back-button:focus {
+  background-color: var(--primary-wh-bg);
+  color: var(--primary-focus);
+  outline: none;
+}
+
+.back-button .icon-arrow {
+  width: 16px; /* Adjust the size of the icon */
+  height: 16px;
+  margin-right: 8px; /* Add spacing between the icon and the text */
+  display: inline-flex;
+  cursor: pointer;
+}
+
+.exam-card {
+  border: 2px solid var(--primary-focus); /* Add a border */
+  border-radius: 8px; /* Round the corners */
+  padding: 16px; /* Add padding inside the border */
+  margin-bottom: 16px; /* Add spacing between articles */
+}
+
+.status-upcoming {
+  border: 2px solid var(--disabled-btn-bg);
+}
+.exam-details {
+  list-style: none;
+  padding-left: 0;
+}
+
+
+.exam-details li {
+  display: flex; /* Use flexbox to align items horizontally */
+  align-items: center; /* Vertically align the image and text */
+  gap: 8px; /* Add spacing between the image and text */
+  margin-bottom: 8px; /* Add spacing between list items */
+}
+
+.exam-details li:last-child { 
+  justify-content: space-between;
+  
+
+}
+
+.exam-details li img {
+  width: 21px;
+  height: 21px; 
+}
+
+
+[data-special="true"] {
+  padding: 0;
+  font-size: 20px;
+  width: 114px;
+  height: 44px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+
+/* Style the status badge */
+.exam-list .status-badge {
+  display: flex; /* Align the dot and text horizontally */
+  align-items: center; /* Vertically align the dot and text */
+  font-size: 1rem;
+  gap: 10px; /* Add spacing between the dot and text */
+  padding-left: 3px;
+  
+}
+
+.exam-list .status-badge.open {
+background-color: var(--registered-status);
+}
+
+.exam-list .status-badge.upcoming {
+  background-color: #E6E6E6;
+}
+
+/* Add a dot before the status badge */
+.exam-list .status-badge::before {
+  content: ""; /* Add an empty content for the dot */
+  display: inline-block;
+  width: 10px; /* Adjust the size of the dot */
+  height: 10px;
+  border-radius: 50%; /* Make it circular */
+}
+
+/* Specific styles for "open" status */
+.exam-list .status-badge.open::before {
+  background-color: var(--registered-status-text); /* Green for "Open" */
+  width: 15px;
+  height: 15px;
+}
+
+/* Specific styles for "upcoming" status */
+.exam-list .status-badge.upcoming::before {
+  background-color: #737A83; /* Gray for "Upcoming" */
+  width: 15px;
+  height: 15px;
+}
+button[aria-disabled="true"] {
+  background-color: #ccc;       /* Light gray background */
+  color: #666;                  /* Dimmed text color */
+  cursor: not-allowed;          /* Show 'not allowed' cursor */
+  border: 1px solid #aaa;
+  box-shadow: none;
+  opacity: 0.7;
+}
+button[aria-disabled="true"] {
+  background-color: var(--disabled-btn-bg);       /* Light gray background */
+  color: var(--dark-text);                  /* Dimmed text color */
+  cursor: not-allowed;          /* Show 'not allowed' cursor */
+  border: 1px solid var(--placeholder-text);
+  box-shadow: none;
+  opacity: 0.7;
+}
+
+button[aria-disabled="true"]:hover,
+button[aria-disabled="true"]:focus {
+  outline: none;
+  box-shadow: none;
+  background-color: var(--placeholder-text);
+  color: var(--disabled-btn-bg);
+}
+
+
+/* canonical screen-reader-only rule */
+.sr-only {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap; /* don’t break the hidden text */
+  border: 0;
+}
+/* focusable screen-reader-only rule */
+.sr-only-focusable {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+.sr-only-focusable:focus,
+.sr-only-focusable:active {
+  position: static !important;
+  width: auto; height: auto;
+  clip: auto;
+  margin: 1rem;
+  padding: 0.5rem 1rem;
+  overflow: visible;
+  background: var(--primary-wh-bg);
+  color: var(--primary-text);
+  z-index: 1000;
+}
+
+/*end of course detail style*/
+
+/*start of notification panel*/
+.notification-panel {
+  position: absolute;
+  top: 130%;
+  right: 0;
+  width: 500px;
+  max-height: 310px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  display: grid;
+  grid-template-rows: auto 1fr auto; /* header, list, button */
+}
+
+.notification-panel[hidden] {
+  display: none !important;
+}
+
+/* 2. Pin the header at the top */
+.notification-panel > .notification-header {
+  align-self: stretch;
+}
+
+/* 3. Make the UL fill the middle and scroll */
+.notification-panel > #notification-list {
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* 4. Pin the “View All” button at the bottom */
+.notification-panel > #notification-view-all {
+  align-self: stretch;
+}
+
+.notification-panel ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.notification-panel li {
+  padding: 0.5rem 0 .5rem 1rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.notification-panel .btn {
+  display: block;
+  width: 100%;
+  height: 44px;
+  background-color: var(--primary-focus);
+  text-align: center;
+  color: var(--primary-wh-bg);
+  font-size: 18px;
+  box-sizing: border-box;
+}
+
+.notification-panel .btn:hover {
+  background-color: var(--primary-wh-bg);
+  color: var(--primary-focus);
+  border: 1px solid var(--primary-focus);
+}
+
+.notification-panel .btn:hover,
+.notification-panel .btn:focus-visible {
+  background-color: var(--primary-wh-bg);
+  color: var(--primary-focus);
+}
+
+#notification-view-all:focus-visible {
+  position: relative;
+  z-index: 11;
+  outline: 2px solid var(--primary-focus);
+  outline-offset: -1px;
+  box-shadow: 0 0 0 2px var(--primary-focus);
+  border: 1px solid var(--primary-focus);
+  border-radius: 4px;
+  margin-top: -1px;
+}
+
+
+
+/* a small purple dot */
+.notification-bell .badge {
+  width: 15px;
+  height: 15px;
+  background-color:var(--primary-focus); 
+  border-radius: 50%;
+  position: absolute;
+  top: 9px;
+  right: 191px;
+  display: none;
+}
+
+/* panel header */
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom:.5rem;
+  padding-left: 1rem; 
+  padding-top: .5rem;
+}
+.notification-title {
+  font-weight: bold;
+  font-size: 18px;
+}
+.notification-close-btn {
+  background: none;
+  border: none;
+  font-size: 18px;  
+  cursor: pointer;
+  width: 44px;
+  height: 44px;
+}
+.notification-close-btn:hover {
+  border: 1px solid var(--primary-focus);
+}
+
+.no-notifications-msg {
+  font-size: 16px;
+  color: var(--dark-text);
+  text-align: center;
+  margin-top: 2rem;
+  background-color: var(--light-bg);
+
+}
+.notif-title {
+  font-weight: bold;
+  font-size: 18px;
+  color: var(--dark-text);
+  padding-left: .25rem;
+}
+
+.notif-msg {
+  font-size: 16px;
+  color: var(--dark-text);
+  padding-bottom: 1rem;
+  padding-left: 1.5rem;
+  padding-right: 1rem;
+}
+
+/*  End of Notification panel */
+
+/* ───────────────────────────────────────────────────────────
+   Notifications Page Styles
+   ─────────────────────────────────────────────────────────── */
+.notification-section {
+  background-color: white;
+  border-radius: 12px;
+  margin: 2rem auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+}
+.notification-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom:1.5rem;
+  padding-top: 1.5rem;
+  padding-left: 1rem; 
+}
+.notif-icon {
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  flex-shrink: 0;
+}
+.notif-header-bar{
+  display: flex;
+  justify-content: space-between;
+}
+.notif-title-container {
+    display: flex;
+    align-items: center; /* Align icon and title vertically */
+    
+}
+
+.notif-registration-icon {
+  background-image: url("../icons/info-gray.png");
+  align-self: center;
+
+}
+
+.notif-deregistration-icon {
+  background-image: url("../icons/info-blue.png"); 
+}
+.notif-registration-approval-icon {
+  background-image: url('../icons/approval.png');
+}
+/* pill-shaped back button */
+.notification-header-bar .back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--light-bg);
+  border: 1px solid var(--primary, #6C33FF);
+  color: var(--primary, #6C33FF);
+  border-radius: 9999px;
+  font-size: 18px;
+  font-weight: 500;
+  text-decoration: none;
+  width: 150px;
+  height: 44px;
+  margin-left: 1rem;
+}
+
+/* center-aligned page title */
+.notification-header-bar h1 {
+  flex: 1;
+  margin: 0 auto;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--primary-text, #333);
+  text-align: center;
+}
+
+/* optional: tighten up the little arrow icon */
+.notification-header-bar .back-button img.icon-arrow {
+  width: 1rem;
+  height: auto;
+}
+  
+#full-notification-list {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+  
+/* Each notification card */
+.notif-item {
+  padding: 1rem 1.5rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  
+}
+.notif-registration {
+  border-top: 2px solid #e2e4e8;
+  background-color: #F6F8FA;
+}
+
+.notif-deregistration {
+  border-top: 2px solid #3D70F5;
+  background-color: #e8f0fe;
+}
+
+.notif-registration-approval {
+  border-top: 2px solid #66C397;        
+  background-color: #F1FAF6;    
+  /* everything else (padding, font, icon positioning) comes from .notif-registration */
+}
+ 
+
+.no-notif-msg {
+  font-size: 18px;
+  color: var(--dark-text);
+  margin-left: 2.25rem;
+  margin-top: 1rem;
+}
+  
+/* Unread indicator */
+.notif-item.unread::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: var(--primary-focus);
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+  
+/* Read state: soften the card */
+.notif-item.read {
+  opacity: 0.8;
+}
+.notif-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.notif-close-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: var(--dark-text);
+  cursor: pointer;
+  padding: 0 .5rem;
+  width: 44px;
+  height: 44px; 
+}
+
+.notif-close-btn:hover {
+  border: 1px solid var(--primary-focus);
+}
+
+.notif-item--small {
+  padding: 0.5rem 0 .5rem 1rem;
+}
+
+.notif-item--small .notif-title {
+  font-size: 0.9rem;
+}
+
+.notif-item--small .notif-msg {
+  font-size: 0.85rem;
+  padding-left: 1.5rem;
+  padding-bottom: .5rem;
+}
+
+/* disabled bell / not-allowed look */
+button.notification-bell:disabled {
+  background-color: var(--disabled-btn-bg);
+  cursor: not-allowed;
+  opacity: 0.6;               /* make it look subdued */
+}
+
+/*the icon go grey */
+button.notification-bell:disabled img {
+  filter: grayscale(100%);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  nav {
+    position: static;
+    width: 100%;
+    min-height: auto;
+  }
+  .content-wrapper {
+    margin-left: 0;
+  }
+  .top-header {
+    margin-left: 0; /* Remove left margin for header */
+  }
+  .header-content {
+    flex-direction: column; /* Stack header content vertically */
+    align-items: flex-start; /* Align items to the left */
+    gap: 1rem; /* Add spacing between stacked items */
+  }
+  .header-middle input[type="search"] {
+    width: 100%; /* Make search bar full width */
+  }
+}
+/* Adjust for smaller screens if needed */
+@media (max-width: 768px) {
+  .week-table thead {
+    font-size: 0.9rem;
+  }
+  .week-table th,
+  .week-table td {
+    padding: 0.5rem;
+  }
+}

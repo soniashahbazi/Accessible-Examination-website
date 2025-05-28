@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Accessible Examination Website</title>
+  <!-- Viewport meta for responsive design -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+  <!-- Skip link for WCAG compliance (keyboard users can jump to main content) -->
+  <a class="visually-hidden" href="#main-content">Skip to main content</a>
+
+  <!-- Fixed sidebar navigation -->
+  <nav aria-label="Main navigation">
+    <!-- LOGO CONTAINER -->
+    <div class="logo-container">
+      <img
+        src="icons/JKU Logo.png"
+        alt="JKU logo"
+        width="168" 
+        height="84"
+        class="logo"
+      >
+    </div>
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="Dashboard.html">
+            <!-- Icon (e.g., SVG or font icon) hidden from screen readers -->
+            <img 
+            src="icons/Dashboard.png" 
+            alt="" 
+            aria-hidden="true" 
+            width="24" 
+            height="22"
+            class="icon icon-dashboard"
+            >
+            <span>Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="Calendar.html">
+            <!-- Icon (e.g., SVG or font icon) hidden from screen readers -->
+            <img 
+            src="icons/Calender.png" 
+            alt="" 
+            aria-hidden="true" 
+            width="24" 
+            height="22"
+            class="icon icon-calender"
+            >
+            <span>Calendar</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="Accomodations.html">
+            <!-- Icon (e.g., SVG or font icon) hidden from screen readers -->
+            <img 
+            src="icons/Accomodation.png" 
+            alt="" 
+            aria-hidden="true" 
+            width="24" 
+            height="22"
+            class="icon icon-accomodation"
+            >
+            <span>Accommodations</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="ExamRegistration.html">
+            <!-- Icon (e.g., SVG or font icon) hidden from screen readers -->
+            <img 
+            src="icons/Exam Registration.png" 
+            alt="" 
+            aria-hidden="true" 
+            width="24" 
+            height="22"
+            class="icon icon-exam-registration"
+            >
+            <span>Exam Registration</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="MyExams.html">
+            <!-- Icon (e.g., SVG or font icon) hidden from screen readers -->
+            <img 
+            src="icons/My Exams.png" 
+            alt="" 
+            aria-hidden="true" 
+            width="24" 
+            height="22"
+            class="icon icon-my-exams"
+            >
+            <span>My Exams</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="Help.html">
+          <!-- Icon (e.g., SVG or font icon) hidden from screen readers -->
+          <img 
+          src="icons/Help.png" 
+          alt="" 
+          aria-hidden="true" 
+          width="24" 
+          height="22"
+          class="icon icon-help"
+          >
+          <span>Help</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- FIXED HEADER -->
+  <header class="top-header" role="banner">
+    <div class="header-content">
+        <!-- LEFT: Welcome Message -->
+        <div class="header-left">
+            <h1 class="welcome-heading">Welcome Sonia</h1>
+        </div>
+        <!-- MIDDLE: Search -->
+        <div class="header-middle">
+            <label for="searchDashboard" class="visually-hidden">
+                Search Dashboard
+            </label>
+            <input
+              id="searchDashboard"
+              type="search"
+              name="search"
+              placeholder="Search Dashboard"
+            />
+        </div>
+        <!-- RIGHT: Notification + Profile -->
+        <div class="header-right">
+            <!-- Notification bell -->
+            <button type="button" class="notification-bell" aria-label="View notifications">
+                <img
+                src="icons/Notif.png"
+                alt="Notification Icon"
+                />
+            </button>
+            <div
+              id="notification-panel"
+              class="notification-panel sr-only"
+              role="region"
+              aria-label="Notifications"
+            >
+              <header class="notification-header">
+                <span class="notification-title">Notifications</span>
+                <button
+                  type="button"
+                  id="notification-close"
+                  class="notification-close-btn"
+                  aria-label="Close notifications"
+                >
+                  ×
+                </button>
+              </header>
+            
+              <ul id="notification-list"></ul>
+            
+              <button
+                type="button"
+                id="notification-view-all"
+                class="btn btn-link"
+              >
+                View All
+              </button>
+            </div>
+            <!-- student profile -->
+            <div class="student-profile">
+                <img src="icons/Profile.png" alt="Profile picture of Sonia Shahbazi" />
+                <!-- A container for the two lines of text -->
+                <div class="profile-text">
+                  <span class="student-fullname">Sonia Shahbazi</span>
+                  <span class="student-id">k12139220</span>
+                </div>
+            </div>
+        </div>
+    </div>
+  </header>
+  <main id="main-content" class="content-wrapper" role="main">
+    <section class="calendar-section" aria-labelledby="calendar-title">
+      <h2 id="calendar-title" class="visually-hidden">Interactive Calendar</h2>
+  
+      <div class="calendar-header">
+        <div class="calendar-nav">
+          <button class="calendar-nav-btn prev-btn" aria-label="Previous month/week/day">&lt;</button>
+          <span class="calendar-current-date" aria-live="polite">Nov 2024</span>
+          <button class="calendar-nav-btn next-btn" aria-label="Next month/week/day">&gt;</button>
+        </div>
+  
+        <div class="calendar-view-buttons" role="group" aria-label="Calendar View Options">
+          <button class="view-toggle" data-view="day" aria-pressed="false">Day</button>
+          <button class="view-toggle" data-view="week" aria-pressed="false">Week</button>
+          <button class="view-toggle" data-view="month" aria-pressed="true">Month</button>
+        </div>
+      </div>
+  
+      <!-- MONTH VIEW -->
+      <div id="month-view" class="calendar-view" aria-hidden="false">
+        <table class="calendar-table month-table" aria-label="Monthly Calendar View">
+          <thead>
+            <tr>
+              <th scope="col" aria-label="Monday">Mon</th>
+              <th scope="col" aria-label="Tuesday">Tue</th>
+              <th scope="col" aria-label="Wednesday">Wed</th>
+              <th scope="col" aria-label="Thursday">Thu</th>
+              <th scope="col" aria-label="Friday">Fri</th>
+              <th scope="col" aria-label="Saturday" class="weekend">Sat</th>
+              <th scope="col" aria-label="Sunday" class="weekend">Sun</th>
+            </tr>
+          </thead>
+          <tbody id="month-body">
+            <!-- JavaScript will dynamically populate rows here -->
+          </tbody>
+        </table>
+      </div>
+  
+      <!-- WEEK VIEW -->
+      <div id="week-view" class="calendar-view" aria-hidden="true">
+        <table class="calendar-table week-table" aria-label="Weekly Calendar View">
+          <tbody id="week-body">
+            <!-- JavaScript will dynamically populate rows here -->
+          </tbody>
+        </table>
+      </div>
+  
+      <!-- DAY VIEW -->
+      <div id="day-view" class="calendar-view" aria-hidden="true">
+        <table class="calendar-table day-table" aria-label="Daily Calendar View">
+          <thead>
+            <tr>
+              <th class="time-column" scope="col"></th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody id="day-body">
+            <!-- JavaScript will populate 24 hourly rows -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script src="js/calendar.js"></script>
+  <script type="module" src="js/notifications.js"></script>
+</body>
+</html>

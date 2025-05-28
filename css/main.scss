@@ -1,0 +1,198 @@
+
+  /* Example color palette (adjust to meet WCAG AA contrast): */
+  :root {
+    --primary-bg: #4100B3;      /* Dark purple background */
+    --primary-text: #ffffff;    /* White text on dark background */
+    --light-bg: #F8F5FF;        /* Light background for sections */
+    --dark-text: #000000;       /* Dark text color */
+    --accent-color: #6B4FAE;    /* Another purple shade for hover/focus states */
+    --urgent-text: #b91c1c;     /* Example red for "urgent" label */
+  }
+
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--light-bg);
+    color: var(--dark-text);
+    line-height: 1.5;
+  }
+  
+  header,
+  nav,
+  main {
+    padding: 1rem;
+  }
+
+  /* Header */
+  header {
+    background-color: var(--primary-bg);
+    color: var(--primary-text);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .branding {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  /* Navigation (sidebar) */
+  nav {
+    width: 250px;
+    background-color: var(--primary-bg);
+    color: var(--primary-text);
+    min-height: 100vh; /* Full-height sidebar */
+    padding-top: 2rem;
+    position: fixed; /* Keep sidebar fixed on the left */
+    top: 0;
+    left: 0;
+  }
+
+  .nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .nav-item a {
+    display: block;
+    color: var(--primary-text);
+    text-decoration: none;
+    padding: 1rem;
+  }
+
+  .nav-item a:hover,
+  .nav-item a:focus {
+    background-color: var(--accent-color);
+    outline: none;
+  }
+
+  /* Main content area */
+  .content-wrapper {
+    margin-left: 250px; /* to account for the sidebar */
+    padding: 2rem;
+  }
+
+  .welcome-heading {
+    margin-top: 0;
+  }
+
+  /* Search bar and user info */
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .search-bar label {
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .search-bar input[type="search"] {
+    padding: 0.5rem;
+    width: 200px;
+  }
+
+  .notification-bell button {
+    background: none;
+    border: none;
+    color: var(--dark-text);
+    cursor: pointer;
+    font-size: 1.2rem;
+  }
+
+  .user-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .user-profile img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  /* Headings & Sections */
+  .section-title {
+    font-size: 1.25rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+  }
+
+  th,
+  td {
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  th {
+    background-color: #e0e0e0;
+    font-weight: 600;
+  }
+
+  .btn {
+    padding: 0.5rem 1rem;
+    margin: 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+
+  .register-btn {
+    background-color: #4b9e44; /* Example green for register */
+    color: #fff;
+  }
+
+  .register-btn:hover,
+  .register-btn:focus {
+    background-color: #3a7d34;
+    outline: none;
+  }
+
+  .deregister-btn {
+    background-color: #f59e0b; /* Example orange for deregister */
+    color: #fff;
+  }
+
+  .deregister-btn:hover,
+  .deregister-btn:focus {
+    background-color: #d97706;
+    outline: none;
+  }
+
+  .exam-urgent {
+    color: var(--urgent-text);
+    font-weight: bold;
+  }
+
+  .exam-upcoming {
+    font-style: italic;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    nav {
+      position: static;
+      width: 100%;
+      min-height: auto;
+    }
+    .content-wrapper {
+      margin-left: 0;
+    }
+  }

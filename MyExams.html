@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>My Exams – Accessible Examination Website</title>
+  <!-- Viewport meta for responsive design -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+  <!-- Skip link for WCAG compliance (keyboard users can jump to main content) -->
+  <a class="sr-only-focusable" href="#main-content">Skip to main content</a>
+
+  <!-- Fixed sidebar navigation -->
+  <nav aria-label="Main navigation">
+    <!-- LOGO CONTAINER -->
+    <div class="logo-container">
+      <img
+        src="icons/JKU Logo.png"
+        alt="JKU logo"
+        width="168" 
+        height="84"
+        class="logo"
+      >
+    </div>
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="Dashboard.html">
+            <!-- Icon (e.g., SVG or font icon) hidden from screen readers -->
+            <img 
+            src="icons/Dashboard.png" 
+            alt="" 
+            aria-hidden="true" 
+            width="24" 
+            height="22"
+            class="icon icon-dashboard"
+            >
+            <span>Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="Calendar.html">
+            <!-- Icon (e.g., SVG or font icon) hidden from screen readers -->
+            <img 
+            src="icons/Calender.png" 
+            alt="" 
+            aria-hidden="true" 
+            width="24" 
+            height="22"
+            class="icon icon-calender"
+            >
+            <span>Calendar</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="Accomodations.html">
+            <!-- Icon (e.g., SVG or font icon) hidden from screen readers -->
+            <img 
+            src="icons/Accomodation.png" 
+            alt="" 
+            aria-hidden="true" 
+            width="24" 
+            height="22"
+            class="icon icon-accomodation"
+            >
+            <span>Accommodations</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="ExamRegistration.html">
+            <!-- Icon (e.g., SVG or font icon) hidden from screen readers -->
+            <img 
+            src="icons/Exam Registration.png" 
+            alt="" 
+            aria-hidden="true" 
+            width="24" 
+            height="22"
+            class="icon icon-exam-registration"
+            >
+            <span>Exam Registration</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="MyExams.html" aria-current="page">
+            <!-- Icon (e.g., SVG or font icon) hidden from screen readers -->
+            <img 
+            src="icons/My Exams.png" 
+            alt="" 
+            aria-hidden="true" 
+            width="24" 
+            height="22"
+            class="icon icon-my-exams"
+            >
+            <span>My Exams</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="Help.html">
+          <!-- Icon (e.g., SVG or font icon) hidden from screen readers -->
+          <img 
+          src="icons/Help.png" 
+          alt="" 
+          aria-hidden="true" 
+          width="24" 
+          height="22"
+          class="icon icon-help"
+          >
+          <span>Help</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- FIXED HEADER -->
+  <header class="top-header" role="banner">
+    <div class="header-content">
+        <!-- LEFT: Welcome Message -->
+        <div class="header-left">
+            <h1 class="welcome-heading">Welcome Sonia</h1>
+        </div>
+
+        <!-- RIGHT: Notification + Profile -->
+        <div class="header-right">
+            <!-- Notification bell -->
+            <button
+              id="notification-bell"
+              class="notification-bell"
+              aria-controls="notification-panel"
+              aria-expanded="false"
+              aria-label="Show notifications"
+            >
+                <img
+                src="icons/Notif.png"
+                alt=""
+                aria-hidden="true"
+                />
+            </button>
+            <div
+              id="notification-panel"
+              class="notification-panel"
+              role="region"
+              aria-label="Notifications"
+              hidden
+            >
+              <div class="notification-header" role="presentation">
+                <span class="notification-title">Notifications</span>
+                <button
+                  type="button"
+                  id="notification-close"
+                  class="notification-close-btn"
+                  aria-label="Close notifications"
+                >
+                  ×
+                </button>
+              </div>
+            
+              <ul id="notification-list"></ul>
+            
+              <button
+                type="button"
+                id="notification-view-all"
+                class="btn btn-link"
+              >
+                View All
+              </button>
+            </div>
+            <!-- student profile -->
+            <div class="student-profile">
+                <img src="icons/Profile.png" alt="Profile picture of Sonia Shahbazi" />
+                <!-- A container for the two lines of text -->
+                <div class="profile-text">
+                  <span class="student-fullname">Sonia Shahbazi</span>
+                  <span class="student-id">k12139220</span>
+                </div>
+            </div>
+        </div>
+    </div>
+  </header>
+  <!-- MAIN CONTENT AREA -->
+  <main id="main-content" class="content-wrapper" role="main">
+    <div id="notification" aria-live="polite" class="sr-only"></div>
+    <section aria-labelledby="my-exams-title" class="my-exams-section">
+      <h2 id="my-exams-title" class="my-exams-heading">My Exams</h2>
+      <div class="search-section">
+        <label for="searchExams" class="sr-only">Search Exams</label>
+        <input
+          id="searchExams"
+          type="search"
+          name="search"
+          placeholder="Search Exams"
+          aria-label="Search exams by course title, date, or status"
+        />
+        <button id="clearSearchBtn" class="search-clear-btn" type="button" aria-label="Clear search">
+          ×
+        </button>
+        <div id="search-feedback" class="sr-only" aria-live="polite" role="status"></div>
+      </div>
+
+      <div class="table-container">
+        <table class="style-one my-exams-table" aria-describedby="my-exams-desc">
+          <caption class="sr-only">My Exams</caption>
+          <thead>
+            <tr>
+              <th scope="col">Course Id</th>
+              <th scope="col" aria-sort="none">
+                <button
+                  class="sort-btn"
+                  data-key="2"                   
+                  data-type="string"            
+                  aria-label="Sort by Course Title"
+                >
+                  Course Title
+                  <span class="sort-icon"></span>
+                </button>
+              </th>
+              <th scope="col" aria-sort="none">
+                <button
+                  class="sort-btn"
+                  data-key="3"
+                  data-type="date"
+                  aria-label="Sort by Date"
+                >
+                  Date
+                  <span class="sort-icon"></span>
+                </button>
+              </th>
+              <th scope="col" aria-sort="none">
+                <button
+                  class="sort-btn"
+                  data-key="4"
+                  data-type="string"
+                  aria-label="Sort by Time"
+                >
+                  Time
+                  <span class="sort-icon"></span>
+                </button>
+              </th>
+              <th scope="col">Location</th>
+              <th scope="col" aria-sort="none" >
+                <button
+                    class="sort-btn"
+                    data-key="6" 
+                    data-type="string"
+                    aria-label="Sort by Status"
+                >
+                    Status
+                    <span class="sort-icon"></span>
+                </button>
+              </th>
+              <th scope="col" aria-sort="none">
+                <button
+                  class="sort-btn"
+                  data-key="7" 
+                  data-type="date"
+                  aria-label="Sort by Deregistration Deadline"
+                >
+                  Deregistration Deadline
+                  <span class="sort-icon"></span>
+                </button>
+              </th>
+              <th scope="col"><span class="sr-only">Actions</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- JS will inject <tr> here -->
+          </tbody>
+        </table>
+      </div>
+      <p id="no-exams-fallback" hidden style="text-align:center; font-style:italic;">
+        No available exams found at this time.
+      </p>
+
+      <div
+        id="my-exams-sort-status"
+        role="status"
+        aria-live="polite"
+        class="sr-only"
+      ></div>
+
+      <p id="my-exams-desc" class="sr-only">
+        This table shows your upcoming exams, including their status,
+        time, location, deregistration deadline, and an action button.
+      </p>
+    </section>
+  </main>
+  <!-- confirm‐deregister dialog -->
+  <dialog id="confirmDereg" aria-labelledby="confirmDeregTitle" aria-describedby="confirmDeregMsg" aria-modal="true">
+    <h2 id="confirmDeregTitle">Confirm deregistration</h2>
+    <p id="confirmDeregMsg">Are you sure?</p>
+    <menu>
+      <button id="confirmYes" class="btn register-btn">Yes, deregister</button>
+      <button id="confirmNo"  class="btn deregister-btn">Cancel</button>
+    </menu>
+  </dialog>
+  
+  <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/myExams.js"></script>
+  <script type="module" src="js/notifications.js"></script>
+  <script type="module" src="js/navigation.js"></script>
+</body>
+</html>

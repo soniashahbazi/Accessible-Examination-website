@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Help – Accessible Examination Website</title>
+  <!-- Viewport meta for responsive design -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+  <!-- Skip link for WCAG compliance (keyboard users can jump to main content) -->
+  <a class="sr-only-focusable" href="#main-content">Skip to main content</a>
+
+  <!-- Fixed sidebar navigation -->
+  <nav aria-label="Main navigation">
+    <!-- LOGO CONTAINER -->
+    <div class="logo-container">
+      <img
+        src="icons/JKU Logo.png"
+        alt="JKU logo"
+        width="168" 
+        height="84"
+        class="logo"
+      >
+    </div>
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="Dashboard.html">
+            <!-- Icon (e.g., SVG or font icon) hidden from screen readers -->
+            <img 
+            src="icons/Dashboard.png" 
+            alt=""
+            aria-hidden="true"  
+            width="24" 
+            height="22"
+            class="icon icon-dashboard"
+            >
+            <span>Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="Calendar.html">
+            <!-- Icon (e.g., SVG or font icon) hidden from screen readers -->
+            <img 
+            src="icons/Calender.png" 
+            alt=""
+            aria-hidden="true" 
+            aria-hidden="true" 
+            width="24" 
+            height="22"
+            class="icon icon-calender"
+            >
+            <span>Calendar</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="Accomodations.html">
+            <!-- Icon (e.g., SVG or font icon) hidden from screen readers -->
+            <img 
+            src="icons/Accomodation.png" 
+            alt="" 
+            aria-hidden="true" 
+            width="24" 
+            height="22"
+            class="icon icon-accomodation"
+            >
+            <span>Accommodations</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="ExamRegistration.html">
+            <!-- Icon (e.g., SVG or font icon) hidden from screen readers -->
+            <img 
+            src="icons/Exam Registration.png" 
+            alt="" 
+            aria-hidden="true" 
+            width="24" 
+            height="22"
+            class="icon icon-exam-registration"
+            >
+            <span>Exam Registration</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="MyExams.html">
+            <!-- Icon (e.g., SVG or font icon) hidden from screen readers -->
+            <img 
+            src="icons/My Exams.png" 
+            alt="" 
+            aria-hidden="true" 
+            width="24" 
+            height="22"
+            class="icon icon-my-exams"
+            >
+            <span>My Exams</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="Help.html" aria-current="page">
+          <!-- Icon (e.g., SVG or font icon) hidden from screen readers -->
+          <img 
+          src="icons/Help.png" 
+          alt="" 
+          aria-hidden="true" 
+          width="24" 
+          height="22"
+          class="icon icon-help"
+          >
+          <span>Help</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- FIXED HEADER -->
+  <header class="top-header" role="banner">
+    <div class="header-content">
+        <!-- LEFT: Welcome Message -->
+        <div class="header-left">
+          <h1 class="welcome-heading">Welcome Sonia</h1>
+        </div>
+        <!-- MIDDLE: Search -->
+        <div class="header-middle">
+            <label for="searchHelp" class="sr-only">
+                Search Help
+            </label>
+            <input
+              id="searchHelp"
+              type="search"
+              name="search"
+              placeholder="Search Help"
+            />
+            <button id="clearSearchBtn" class="search-clear-btn" type="button" aria-label="Clear search">
+              ×
+            </button>
+            <!-- announces how many sections match -->
+            <p
+              id="help-result-count"
+              role="status"
+              class="sr-only"
+              aria-live="polite"
+            ></p>
+        </div>
+
+        <!-- RIGHT: Notification + Profile -->
+        <div class="header-right">
+            <!-- Notification bell -->
+            <button
+              id="notification-bell"
+              class="notification-bell"
+              aria-controls="notification-panel"
+              aria-expanded="false"
+              aria-label="Show notifications"
+            >
+                <img
+                src="icons/Notif.png"
+                alt=""
+                aria-hidden="true"
+                />
+            </button>
+            <div
+              id="notification-panel"
+              class="notification-panel"
+              role="region"
+              aria-label="Notifications"
+              hidden
+            >
+              <div class="notification-header" role="presentation">
+                <span class="notification-title">Notifications</span>
+                <button
+                  type="button"
+                  id="notification-close"
+                  class="notification-close-btn"
+                  aria-label="Close notifications"
+                >
+                  ×
+                </button>
+              </div>
+            
+              <ul id="notification-list"></ul>
+            
+              <button
+                type="button"
+                id="notification-view-all"
+                class="btn btn-link"
+              >
+                View All
+              </button>
+            </div>
+            <!-- student profile -->
+            <div class="student-profile">
+                <img src="icons/Profile.png" alt="Profile picture of Sonia Shahbazi" />
+                <!-- A container for the two lines of text -->
+                <div class="profile-text">
+                  <span class="student-fullname">Sonia Shahbazi</span>
+                  <span class="student-id">k12139220</span>
+                </div>
+            </div>
+        </div>
+    </div>
+  </header>
+  <!-- Place this AFTER your header in the body -->
+  <main id="main-content" class="content-wrapper" role="main">
+    <section aria-labelledby="integrated-studying-title" class="institute-section">
+      <h2 id="integrated-studying-title" class="institute-title">
+        INSTITUT INTEGRATED STUDYING
+      </h2>
+  
+      <!-- Row 1: Address | Location -->
+      <div class="row">
+        <!-- Left Column: Address -->
+        <div class="column">
+          <h3 class="col-heading">Address</h3>
+          <address class="institute-address">
+            <div class="address-row">
+              <img 
+                src="icons/address-icon.png" 
+                alt="" 
+                aria-hidden="true" 
+                class="address-icon"
+              >
+              <div class="address-text">
+                Johannes Kepler University<br>
+                Altenberger Straße 69<br>
+                4040 Linz
+              </div>
+            </div>
+          </address>
+        </div>
+  
+        <!-- Right Column: Location -->
+        <div class="column">
+          <h3 class="col-heading">Location</h3>
+          <div class="info-row">
+            <img 
+              src="icons/location-icon.png" 
+              alt="" 
+              aria-hidden="true" 
+              class="location-icon"
+            >
+            <div class="info-text">
+              University Found Building, 1st floor<br>
+              <span class="highlight">Operational Management:</span> Room HF102<br>
+              <span class="highlight">Student Services:</span> Room HF136
+            </div>
+          </div>
+        </div>
+      </div> <!-- End Row 1 -->
+  
+      <!-- Row 2: Email | Phone -->
+      <div class="row">
+        <!-- Left Column: Email -->
+        <div class="column">
+          <h3 class="col-heading">Email</h3>
+          <div class="info-row">
+            <img class="email-icon" src="icons/email-icon.png" alt="" aria-hidden="true">
+            <a href="mailto:integrated-study@jku.at">integrated-study@jku.at</a>
+          </div>
+        </div>
+  
+        <!-- Right Column: Phone -->
+        <div class="column">
+          <h3 class="col-heading">Phone</h3>
+          <div class="info-row">
+            <img 
+              src="icons/phone-icon.png" 
+              alt="" 
+              aria-hidden="true" 
+              class="phone-icon"
+            >
+            <div class="info-text">
+              <span class="highlight">Operational Management:</span><br>
+              +43 2468 3757<br>
+              <span class="highlight">Student Services:</span><br>
+              +43 2468 2577<br>
+              +43 664 20 2486 864
+            </div>
+          </div>
+        </div>
+      </div> <!-- End Row 2 -->
+    </section>
+  </main>
+  <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/notifications.js"></script>
+  <script type="module" src="js/navigation.js"></script>
+  <script type="module" src="js/help.js"></script>
+  
+</body>
+</html>
+
+

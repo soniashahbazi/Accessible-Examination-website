@@ -1,0 +1,1168 @@
+/* Example color palette (adjust to meet WCAG AA contrast): */
+:root {
+  --primary-focus: #4100B3; /* Dark purple background */
+  --primary-wh-bg: #ffffff;
+  --primary-text: #000000; /* White text on dark background */
+  --light-bg: #F8F5FF; /* Light background for sections */
+  --dark-text: #000000; /* Dark text color */
+  --accent-color: #F8F5FF; /* Another purple shade for hover/focus states */
+  --urgent-text: #b91c1c; /* Example red for "urgent" label */
+  --placeholder-text: #595959;
+  --registered-status: #DCFAE6;
+  --registered-status-text: #065B38;
+  --pending-status-text: #893606;
+  --pending-status: #FEF0C7;
+  --disabled-btn-bg: #E4E4E4;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: var(--light-bg);
+  color: var(--dark-text);
+  line-height: 1.5;
+}
+
+.visually-hidden {
+  /* Hide content visually but keep it accessible to screen readers */
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+}
+
+
+/* Navigation (sidebar) */
+nav {
+  width: 300px;
+  background-color: var(--primary-wh-bg);
+  color: var(--primary-text);
+  min-height: 100vh; /* Full-height sidebar */
+  padding-top: 1rem;
+  position: fixed; /* Keep sidebar fixed on the left */
+  top: 0;
+  left: 0;
+  font-size: 24px;
+}
+
+.logo-container {
+  text-align: center; /* This ensures the logo inside is centered horizontally */
+  margin:0;     /* optional spacing above/below logo */
+}
+
+.logo-container .logo {
+  display: inline-block; /* ensures text-align: center works properly */
+  width: 150px; 
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-item a {
+  display: flex;            /* Arrange icon and text in a row */
+  align-items: center;      /* Vertically center them */
+  gap: 1.5rem; 
+  color: var(--primary-text);
+  text-decoration: none;
+  padding: 1rem;
+}
+.nav-item a img {
+  padding-left: 1rem;
+}
+
+.nav-item a:hover,
+.nav-item a:focus {
+  background-color: var(--accent-color);
+  outline: none;
+  color: var(--primary-focus);
+  border-radius: 8px;
+  transform: scale(0.97);
+
+}
+
+.nav-item a:focus {
+  outline: 2px solid #4c268c;  /* visible focus outline */
+  outline-offset: 2px;
+}
+
+.nav-item a:hover .icon-dashboard {
+  content: url('../icons/dashboard-hover.png');
+}
+
+.nav-item a:hover .icon-calender {
+  content: url('../icons/calendar-hover.png');
+}
+
+.nav-item a:hover .icon-accomodation {
+  content: url('../icons/accomodation-hover.png');
+}
+.nav-item a:hover .icon-exam-registration {
+  content: url('../icons/examregistration-hover.png');
+}
+.nav-item a:hover .icon-my-exams {
+  content: url('../icons/myexam-hover.png');
+}
+.nav-item a:hover .icon-help {
+  content: url('../icons/help-hover.png');
+}
+
+/* HEADER */
+.top-header {
+  top: 0;
+  margin-left: 300px; /* same as sidebar width */
+  right: 0;
+  background-color:var(--light-bg);
+  color: #000000;
+  padding: 1rem;
+  z-index: 999;
+}
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.header-left {
+  flex: 1;
+}
+.header-middle {
+  flex: 1;
+  text-align: center;
+}
+.header-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: .5rem;
+  
+}
+.welcome-heading {
+  margin: 0;
+  font-size: 28px;
+  margin-left: .5em;
+  font-weight: lighter;
+}
+
+/* Search bar */
+.header-middle input[type="search"] {
+  background: url('../icons/search.png') no-repeat 8px center;
+  background-size: 20px 20px;   /* scale the icon if necessary */
+  background-color: var(--primary-wh-bg);
+  
+  /* Add left padding so the text doesn’t overlap the icon */
+  padding-left: 48px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+
+  /* Ensure good contrast, borders, etc. as needed */
+  width: 350px;      /* matches Figma's fixed width */
+  height: 45px;      /* matches Figma's fixed height */
+  box-sizing: border-box;
+  font-size: 14px;
+}
+/* 2) Focus state */
+.header-middle input[type="search"]:focus {
+  outline: 2px solid #4c268c; /* visible outline for WCAG compliance */
+}
+
+.header-middle input[type="search"]::placeholder {
+  color: var(--placeholder-text);   /* ensure readable contrast */
+  opacity: 1;
+}
+
+/* Vendor-specific fallback (optional) */
+.header-middle input[type="search"]:-ms-input-placeholder {
+  color:var(--placeholder-text);
+  opacity: 1;
+}
+.header-middle input[type="search"]::-ms-input-placeholder {
+  color: var(--placeholder-text);
+  opacity: 1;
+}
+.header-middle input[type="search"]:-moz-placeholder {
+  color: var(--placeholder-text);
+  opacity: 1;
+}
+.header-middle input[type="search"]::-moz-placeholder {
+  color: var(--placeholder-text);
+  opacity: 1;
+}
+.header-middle input[type="search"]::-webkit-input-placeholder {
+  color: var(--placeholder-text);
+  opacity: 1;
+}
+
+/* Notification bell button */
+.notification-bell {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+
+}
+.notification-bell img {
+  vertical-align: middle; 
+  width: 45px;
+  height: 45px;
+  padding-right: 2em;
+
+}
+
+.search-bar input[type="search"] {
+  padding: 0.5rem;
+}
+
+.student-profile {
+  display: flex;
+  align-items: center;
+  gap: .5rem; /* space between image and text */
+  flex-direction: row;
+}
+
+.student-profile img {
+  width: 45px;
+  height: 45px;
+  object-fit: cover;
+}
+
+/* Force the two lines of text to stack vertically */
+.profile-text {
+  display: flex;
+  flex-direction: column; /* stack spans vertically */
+  line-height: 1.5;      /* or whatever spacing you like */
+}
+
+.student-fullname {
+  font-size: 14px;
+}
+
+.student-id {
+  font-size: 14px;
+  font-weight: lighter;
+}
+
+
+/* MAIN CONTENT WRAPPER */
+.content-wrapper {
+  /* Push content below the fixed header’s height */
+  margin-left: 300px;  /* width of sidebar */
+  padding: 1rem 1rem;
+  overflow: visible; /* Ensure the parent container does not clip the table */
+}
+
+.content-wrapper section[aria-labelledby="dashboard-overview"] p {
+  font-size: 24px;          /* or use rem/em units as per your design, e.g., 1.125rem for 18px */
+  color: var(--primary-wh-bg);              /* ensure sufficient contrast with the background */
+  line-height: 1.5;
+  margin: 1rem 1rem;
+  padding: 1rem 1.5rem;           
+  font-weight: 400;         /* normal text weight */
+  text-align: left; 
+  background-color: var(--primary-focus);
+  border-radius: 8px;        
+}
+
+.exam-section-header {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  border-bottom: 1.5px solid #CED8E5; /* Adjust color and thickness */
+}
+
+.section-icon {
+  width: 30px;             
+  height: 30px;
+  object-fit: contain;
+  /* Remove any extra margin if needed */
+  margin-left: .75rem;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  flex-grow: 1;
+  margin: .5rem;
+   
+}
+
+.view-all-link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  font-size: 1rem;
+  color: var(--primary-focus); /* Ensure good contrast with your background */
+  transition: background-color 0.3s ease, 
+  color 0.3s ease, 
+  transform 0.2s ease, 
+  box-shadow 0.2s ease,
+  border-color 0.3s ease;
+}
+.view-all-link:hover,
+.view-all-link:focus{
+  transform: scale(1.03);                   /* Slight enlargement */
+  text-decoration: none;  
+}
+
+/* Additional focus indicator for keyboard users */
+.view-all-link:focus {
+  outline: 2px solid var(--primary-focus);
+  outline-offset: 1.5px;
+  box-shadow: 0 0 0 3px rgba(var(--primary-focus-rgb), 0.5); 
+}
+
+/* Control the image (chevron) specifically */
+.icon-chevron {
+  margin-left: 0.25rem; /* adds space between text and icon */
+  width: 25px;  /* Control the size as needed */
+  height: 25px; /* Maintain aspect ratio */
+  object-fit: contain; /* Keeps the aspect ratio of the icon file */
+}
+.table-container {
+  overflow-x: auto; /* Allow horizontal scrolling if needed */
+  margin: 1rem; /* Match the margin of the dashboard overview */
+  border-radius: 8px; /* Add rounded corners */
+  overflow: visible; /* or auto, but not hidden */
+  margin: 0;         /* no large top margin that hides border behind container */
+  padding: 0;
+  
+}
+/* TABLE STYLE-TWO: Custom styles for the dashboards tables */
+.style-two {
+  width: 100%; /* Full width inside the container */
+  border-collapse: separate; /* Allows border-radius to work */
+  border-spacing: 0; /* Removes gaps between cells */
+  margin: 0; /* Remove extra margins */
+}
+
+.style-two tbody tr:nth-child(odd) {
+  background-color:#F4F6F7; /* Light gray for odd rows */
+}
+/* Odd rows */
+.style-two tbody tr:nth-child(even) {
+  background-color: var(--accent-color); /* Light gray for odd rows */
+}
+
+.style-two tbody tr td:nth-child(1), /* First column */
+.style-two thead tr th:nth-child(1) {
+  width: 60%; /* Adjust width as needed */
+}
+
+.style-two tbody tr td:nth-child(2), /* Second column */
+.style-two thead tr th:nth-child(2) {
+  width: 25%; /* Adjust width as needed */
+}
+
+.style-two tbody tr td:nth-child(3), /* Third column */
+.style-two thead tr th:nth-child(3) {
+  width: 15%; /* Adjust width as needed */
+  text-align: center;
+}
+.style-two th,
+.style-two td {
+  padding: 0.75rem;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.style-two th { 
+  font-weight: 400;
+}
+.exam-icon {
+  width: 16px; /* Adjust size as needed */
+  height: 16px;
+  margin-left: 1rem; /* Add spacing between text and icon */
+  margin-right: .5rem;
+  
+}
+
+.btn {
+  display: inline-block; /* Ensures consistent sizing */
+  width: 130px; /* Set a fixed width */ 
+  padding: 0.5rem;
+  margin: 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.register-btn {
+  background-color:var(--primary-focus); /* Example green for register */
+  color: #fff;
+}
+
+.register-btn:hover,
+.register-btn:focus {
+  background-color: #ffffff;
+  color: var(--primary-focus);
+  outline: 1px solid #4100B3;
+}
+
+.deregister-btn {
+  background-color: var(--primary-focus); /* Example orange for deregister */
+  color: #fff;
+}
+
+.deregister-btn:hover,
+.deregister-btn:focus {
+  background-color: #ffffff;
+  color: var(--primary-focus);
+  outline: 1px solid #4100B3;
+}
+
+.exam-urgent {
+  font-weight: bold;
+}
+
+.exam-upcoming {
+  font-style: italic;
+}
+
+/* HELP PAGE SECTION */
+
+/* Main institute section container */
+.institute-section {
+  background-color:var(--primary-wh-bg);
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Main Title */
+.institute-title {
+  margin-top: 0;
+  font-size: 28px;
+  margin-bottom: 1rem;
+}
+
+/* ROWS: Each row has 2 columns side by side */
+.row {
+  display: flex;
+  gap: 2rem;          /* spacing between columns */
+  margin-bottom: 2rem;/* space below each row */
+}
+
+/* Each column can grow/shrink; min width ensures they wrap on narrow screens */
+.column {
+  flex: 1 1 200px;
+  margin-left: 6rem;
+}
+
+/* Subheadings for each content block */
+.col-heading {
+  margin: 1rem 0 0.5rem;
+  font-size: 1.125rem;
+  font-weight: bold;
+}
+/* Override default browser styling for <address> */
+address {
+  font-style: normal; /* Remove italic styling */
+}
+/* Icon + text alignment (address-row, info-row, etc.) */
+.address-row,
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.address-text,
+.info-text {
+  line-height: 1.4;
+  font-size: 1rem;
+}
+.info-text .highlight {
+  font-weight: 600; 
+}
+
+/* Icon styling (same size for address, email, location, phone, etc.) */
+.address-icon,
+.email-icon,
+.location-icon,
+.phone-icon {
+  width: 20px; 
+  height: 20px;
+  object-fit: contain;
+}
+
+/* Link styling */
+.institute-section a { 
+  text-decoration: none;
+}
+.institute-section a:hover,
+.institute-section a:focus {
+  text-decoration: underline;
+}
+/* End of Help Page Section */
+
+
+/* The main accommodations container */
+.accommodation-section {
+  background-color: #f9f9f9; /* ensure contrast with text */
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Each sub-section (article) within the accommodations */
+.accommodation-group {
+  margin-bottom: 2rem; /* spacing between groups */
+}
+
+/* Specific background color for the first and third sections */
+.accommodation-group:nth-of-type(1),
+.accommodation-group:nth-of-type(3) {
+  background-color: var(--accent-color); /* Different color for these sections */
+}
+
+/* Default background for other sections */
+.accommodation-group {
+  background-color: #f9f9f9; /* Default background color */
+}
+
+/* Subheading for each accommodation category */
+.accommodation-subheading {
+  margin: 1rem 0 0.5rem;
+  font-size: 28px;  
+  font-weight: 600;
+}
+
+/* Unordered list for bullet points (technology accommodations, etc.) */
+.accommodation-list {
+  list-style: disc;
+  margin: 0.5rem 1.5rem;  /* indent the bullets a bit */
+  padding: 0;
+}
+
+/* Individual list items */
+.accommodation-list li {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+  font-size: 24px;
+  margin-left: 1em;
+}
+
+.accommodation-list li img {
+  width: 20px;
+  height: 20px; 
+  margin-left: .5rem;
+
+}
+
+/* Strong text (like "Laptop Usage:" or "Math Exams:") */
+.accommodation-group strong {
+  font-weight: 600;  /* or 700 if you prefer bolder text */
+}
+/* End of Accomodation style*/
+
+/* My Exams Section Container */
+.my-exams-section {
+  background-color: var(--primary-wh-bg);
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Main Heading */
+.my-exams-heading {
+  margin-top: 0;
+  font-size: 24px;
+  margin-bottom: 5rem;
+}
+/* Style for the search section */
+.search-section {
+  display: flex;
+  justify-content: flex-end; /* Align to the right */
+  align-items: center; /* Center vertically */
+  margin-bottom: 1rem; /* Add spacing below */
+  
+}
+
+.search-section input[type="search"] {
+  background: url('../icons/search.png') no-repeat 8px center; /* Add search icon */
+  background-size: 20px 20px; /* Scale the icon */
+  background-color: var(--primary-wh-bg);
+  padding: 0.75rem; 
+  padding-left: 48px;
+  font-size: 1rem; /* Match font size with the header */
+  border: 1px solid #ccc; /* Add a border */
+  border-radius: 8px; /* Rounded corners */
+  width: 200px; /* Set a fixed width */
+  max-width: 100%; /* Ensure responsiveness */
+}
+
+.search-section input[type="search"]:focus {
+  outline: 1px solid var(--primary-focus); /* Add focus outline for accessibility */
+  outline-offset: 1px;
+}
+
+
+/* TABLE STYLE-ONE: Custom styles for the exam table */
+.style-one {
+  width: 100%;
+  border-collapse: separate; /* Allows border-radius to work */
+  border-spacing: 0; /* Removes gaps between cells */
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+
+.style-one th,
+.style-one td {
+  padding: 1.5rem 0.5rem;
+  border-bottom: 1px solid #ccc;; 
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.style-one th {
+  font-weight: 600;
+}
+
+/* Remove the bottom border for the last row */
+.style-one tbody tr:last-child td {
+  border-bottom: none; /* Remove the bottom border */
+}
+
+/* Optional zebra striping */
+.style-one tbody tr:nth-child(even) {
+  background-color: var(--primary-wh-bg);
+}
+.style-one tbody tr:nth-child(odd) {
+  background-color: var(--primary-wh-bg);
+}
+
+/* Set specific widths for columns in the style-one table */
+.style-one th:nth-child(1),
+.style-one td:nth-child(1) {
+  width: 3%; /* Adjust width for the first column */
+
+}
+
+.style-one th:nth-child(2),
+.style-one td:nth-child(2) {
+  width: 9%; /* Adjust width for the second column */
+}
+
+.style-one th:nth-child(3),
+.style-one td:nth-child(3) {
+  width: 18%; /* Adjust width for the third column */
+}
+.style-one th:nth-child(4),
+.style-one td:nth-child(4) {
+  width: 7%; /* Adjust width for the third column */
+}
+.style-one th:nth-child(5),
+.style-one td:nth-child(5) {
+  width: 13%; /* Adjust width for the third column */
+}
+.style-one th:nth-child(6),
+.style-one td:nth-child(6) {
+  width: 11%; /* Adjust width for the third column */
+}
+
+.style-one th:nth-child(7),
+.style-one td:nth-child(7) {
+  width: 12%; /* Adjust width for the third column */
+}
+
+
+/* Override size for deregister button in style-one table */
+.style-one .btn.deregister-btn {
+  width: 80px; /* Set a specific width */
+  padding: 0.75rem .5rem 0.75rem .5rem;
+}
+.btn:disabled {
+  background-color: var(--disabled-btn-bg); /* Gray background */
+  color: var(--dark-text); 
+  cursor: not-allowed; /* Show "not allowed" cursor */
+  
+}
+
+/* Status Badge Styling */
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 16px;
+}
+
+.status-badge.registered {
+  background-color: var(--registered-status);
+  color: var(--registered-status-text);
+}
+.status-badge.pending {
+  background-color: var(--pending-status);
+  color: var(--pending-status-text);
+}
+.pending-status-icon,
+.registered-status-icon {
+  width: 10px; /* Set the desired width */
+  height: 10px; /* Set the desired height */
+  margin-right: .25rem;
+}
+
+
+/* Visually Hidden Class (for skip links and descriptions) */
+.visually-hidden {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+}
+
+/* Focus Style for Interactive Elements */
+.btn:focus,
+.status-badge:focus,
+th:focus,
+td:focus {
+  outline: 2px solid #4c268c;
+  outline-offset: 2px;
+}
+
+/* End of My Exams Section Container */
+
+/* Exam registration container*/
+
+.exam-registration-section {
+  background-color: var(--primary-wh-bg);
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Main Heading */
+.exam-registration-heading {
+  margin-top: 0;
+  font-size: 24px;
+  margin-bottom: 5rem;
+}
+
+.exam-registration-table th:nth-child(4),
+.exam-registration-table td:nth-child(4) {
+  width: 5%; /* Adjust the width for the Lecturer column */
+}
+
+.exam-registration-table th:nth-child(5),
+.exam-registration-table td:nth-child(5) {
+  width: 7%; /* Adjust the width for the Lecturer column */
+}
+.exam-registration-table th:nth-child(6),
+.exam-registration-table td:nth-child(6) {
+  width: 15%; /* Adjust the width for the Lecturer column */
+}
+
+.exam-registration-table th:nth-child(7),
+.exam-registration-table td:nth-child(7) {
+  width: 13%; /* Adjust the width for the Lecturer column */
+}
+
+/* Button Styling for Exam Registration */
+.view-register-btn {
+  background-color: var(--primary-focus); /* Same as the deregister button */
+  color: #fff; /* White text */
+  border: none;
+  border-radius: 4px; /* Rounded corners */
+  padding: 0.75rem .5rem; /* Adjust padding */
+  font-size: 0.9rem; /* Match font size */
+  cursor: pointer;
+  
+}
+
+.view-register-btn:hover,
+.view-register-btn:focus {
+  background-color: #ffffff; /* White background on hover */
+  color: var(--primary-focus); /* Primary focus color for text */
+  outline: 1px solid var(--primary-focus); /* Add focus outline */
+}
+
+/* Disabled Button Styling */
+.view-register-btn:disabled {
+  background-color: var(--disabled-btn-bg); /* Grey background for disabled state */
+  color: var(--dark-text); /* Dark text color */
+  cursor: not-allowed; /* Show "not allowed" cursor */
+}
+
+/* Status Badge Styling for Not Registered */
+.status-badge.not-registered {
+  background-color: var(--disabled-btn-bg); /* Light grey background */
+  color: #3F3748; /* Dark grey text */
+  border-radius: 16px; /* Rounded corners */
+  padding: 0.25rem 0.5rem; /* Adjust padding */
+  display: inline-block;
+  font-size: 0.85rem; /* Match font size */
+}
+
+.not-registered-status-icon {
+  width: 10px; /* Icon width */
+  height: 10px; /* Icon height */
+  margin-right: 0.25rem; /* Space between icon and text */
+}
+
+/* End of Exam Registration container*/
+
+/*Start of Calendar section*/
+
+/* Calendar Section Container */
+.calendar-section {
+  border-radius: 8px; /* Rounded corners */
+  padding: 0 2rem; /* Add padding inside the section */
+  
+}
+
+/* CALENDAR HEADER: date navigation & day/week/month toggles */
+.calendar-header {
+  display: flex; /* Align items horizontally */
+  justify-content: space-between; /* Space out navigation and view toggles */ 
+  background-color: var(--primary-wh-bg);
+  position: relative; /* Ensure stacking context is applied */
+  z-index: 20; /* Set a higher z-index to keep it above the weekend elements */
+}
+
+.calendar-nav {
+  display: flex; /* Align items horizontally */
+  align-items: center; /* Vertically center the buttons and date */
+  gap: 1rem; /* Add spacing between the buttons and the date */
+}
+
+/* Left side: date nav or next/prev arrows + month name */
+.calendar-nav-btn {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+.calendar-current-date {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* Right side: toggle buttons for day/week/month */
+.calendar-view-buttons {
+  display: flex;
+}
+
+.view-toggle {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0.5rem 1rem;
+}
+
+/* If a view is "active" (aria-pressed="true"), style differently */
+.view-toggle[aria-pressed="true"] {
+  background-color: #4100B3;
+  color: #fff;
+  border-color: #4100B3;
+  z-index: 1; /* Default z-index for all views */
+  position: relative; 
+}
+
+/* Hide or show the different calendar views */
+.calendar-view {
+  display: block; /* or you can set to none if hidden by JS */
+
+}
+
+.calendar-view[aria-hidden="false"] {
+  display: block; /* Show the active view */
+  z-index: 10; /* Bring the active view to the front */
+}
+
+/* MONTHLY TABLE */
+.calendar-table {
+  width: 100%; /* Ensure the table takes up the full width of its container */
+  table-layout: fixed;  /* Prevent the table from exceeding the container's width */
+  border-collapse: collapse; /* Merge borders */
+  background: #fff; /* White background for the table */
+  border-radius: 8px; /* Rounded corners */
+  margin: 0 auto; /* Center the table horizontally */
+}
+
+.calendar-table th{
+  padding: 1rem; /* Adjust padding for consistent spacing */
+  border: 1px solid #ddd; /* Add a light border */
+  text-align: center; /* Center-align the text */
+  vertical-align: top; /* Align content to the top */
+  width: 14.28%; /* Ensure 7 equal columns for the week */
+  min-height: 169px; /* Set a minimum height for cells */
+  box-sizing: border-box; /* Include padding in width/height calculations */
+  position: relative;
+}
+.calendar-table td{
+  width: 186px;                /* Fixed width (from your Figma design) */
+  height: 169px;               /* Fixed height (from your Figma design) */
+  border: 1px solid #ddd; /* Add a light border */
+  position: relative;
+}
+
+/* Style for the entire weekend column (Saturday and Sunday) */
+.calendar-table th.weekend,
+.calendar-table td.weekend {
+  background-color: #F7F7F7; /* Light grey background */
+  position: relative;
+  z-index: 0; 
+}
+
+/* The date number in each cell */
+.date-num {
+  position: absolute; /* Position the date number absolutely */
+  top: 0.5rem; /* Adjust vertical alignment */
+  right: 0.5rem;
+  margin-bottom: 0.25rem;
+  text-align: right;
+  font-size: 12px;
+  z-index: 1;
+}
+
+/* Link for each event in the cell */
+.calendar-event {
+  display: block; 
+  color: #fff;
+  text-decoration: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 12px;
+  width: 100%;
+  text-overflow: ellipsis; /* Add ellipsis for long text */
+  box-sizing: border-box; /* Include padding in width/height calculations */
+  position: relative; /* Set position to relative for z-index to work */
+  z-index: 9; /* Ensure events are above the weekend background */ 
+}
+.event-title {
+  font-size: 10px; /* Adjust size for the title */
+}
+
+
+/* Hover and focus styles for better interactivity */
+.calendar-event:hover,
+.calendar-event:focus {
+  outline: none;
+  transform: scale(1.02);
+  box-shadow: 0 0 0 1px #4100B3;
+  z-index: 10;
+}
+
+/* Specific styles for different event types */
+.registration-deadline {
+  background-color: rgba(254, 228, 226, 0.2); /* Red for registration deadline */
+  color: #901C14;
+  border-left: #F04438 5px solid; 
+}
+
+.deregistration-deadline {
+  background-color: rgba(254, 240, 199, 0.2); /* Use RGBA for 20% opacity */
+  color: #893606;
+  border-left: 5px solid #F79009;
+}
+
+.more-events {
+  background-color: rgba(209, 224, 255, 0.2); /* Blue for "+1 more" */
+  color:#003AAD;
+  border-left: #004EEB 5px solid;
+}
+
+
+/* Focus Indicators for Buttons & Links */
+.calendar-nav-btn:focus,
+.view-toggle:focus,
+.calendar-event:focus {
+  outline: 2px solid #4100B3;
+  outline-offset: 2px;
+}
+
+/* End of Calendar section */
+.week-table {
+  width: 100%;
+  border-collapse: collapse;    /* merges borders for a consistent grid line */
+  table-layout: fixed;         /* columns have fixed widths */
+  background-color: #fff;      /* White background for the table */
+}
+
+.week-table thead {
+  background-color: #f9f9f9;   /* Light gray for the header row */
+}
+
+.week-table thead :first-child { 
+background-color: var(--primary-wh-bg);
+}
+
+.week-table th,
+.week-table td {
+  width: 180px; /* Set fixed width */
+  height: 50px; /* Set fixed height */
+  border: 1px solid #eee;      /* Faint grid lines */
+  text-align: left;            
+  vertical-align: top;
+  padding: 0.25rem;
+  width: 12.5%;                /* 8 columns total => 100% / 8 = 12.5% each */
+  box-sizing: border-box; 
+}
+
+.week-table th {
+  text-align: center; 
+}
+.week-table td {
+  padding: .25rem;
+}
+
+/* The first column: time column should be narrower if you like */
+.week-table .time-column {
+  width: 4%;
+  background-color: var(--primary-wh-bg);    /* Slightly different background for the time column */
+    
+}
+.week-table thead .time-column {
+border: none;    
+}
+
+.week-table tbody .time-column {
+  border: none;  
+}
+  
+
+/* Weekend columns*/
+.week-table .weekend {
+  background-color: #fcfcfc; 
+}
+
+/* Additional color-coded events */
+
+.exam-date {
+  background-color: rgba(220, 250, 230, 0.2);; 
+  color: #065B38;
+  border-left: 5px solid #17B26A;
+  width: 100%;
+}
+
+/* Ensuring a distinct focus style for keyboard users */
+.calendar-event:focus {
+  outline: none; /* overridden by box-shadow above */
+}
+
+/*  End of week view calendar*/
+
+/* General styles for the day view */
+.day-table {
+  width: 100%;
+  border-collapse: collapse; /* Remove gaps between table cells */
+  table-layout: fixed; /* Fixed layout for consistent widths */
+  background-color: #fff; /* White background for the table */
+}
+
+
+.day-table th {
+  text-align: left;
+  padding: 0.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+}
+
+.day-table .time-column {
+  width: .75%; /* Narrower column for time */
+  background-color: var(--primary-wh-bg); /* Slightly different background for the time column */
+  text-align: left;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.day-table tbody .time-column {
+  border: none; 
+}
+
+.day-table .day-column {
+  width: 90%; /* Wider column for events */
+  padding: 0.5rem;
+  font-size: 1rem;
+  color: #333;
+}
+
+.day-table td {
+  height: 50px; /* Fixed height for each time slot */
+  border: 1px solid #eee; /* Light border for grid lines */
+  vertical-align: top;
+  padding: 0.25rem;
+  box-sizing: border-box;
+}
+
+.day-table .calendar-event {
+  display: block;
+  color: #fff;
+  text-decoration: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 12px;
+  width: 100%;
+  text-overflow: ellipsis; /* Add ellipsis for long text */
+  box-sizing: border-box; /* Include padding in width/height calculations */
+  position: relative;
+  z-index: 9;
+}
+
+.day-table .deregistration-deadline {
+  background-color: rgba(254, 240, 199, 0.2); /* Light orange */
+  color: #893606;
+  border-left: 5px solid #F79009;
+}
+
+.day-table .registration-deadline {
+  background-color: rgba(254, 228, 226, 0.2); /* Light red */
+  color: #901C14;
+  border-left: 5px solid #F04438;
+}
+
+.day-table .exam-date {
+  background-color: rgba(220, 250, 230, 0.2); /* Light green */
+  color: #065B38;
+  border-left: 5px solid #17B26A;
+}
+/* End of the day view */
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  nav {
+    position: static;
+    width: 100%;
+    min-height: auto;
+  }
+  .content-wrapper {
+    margin-left: 0;
+  }
+  .top-header {
+    margin-left: 0; /* Remove left margin for header */
+  }
+  .header-content {
+    flex-direction: column; /* Stack header content vertically */
+    align-items: flex-start; /* Align items to the left */
+    gap: 1rem; /* Add spacing between stacked items */
+  }
+  .header-middle input[type="search"] {
+    width: 100%; /* Make search bar full width */
+  }
+}
+/* Adjust for smaller screens if needed */
+@media (max-width: 768px) {
+  .week-table thead {
+    font-size: 0.9rem;
+  }
+  .week-table th,
+  .week-table td {
+    padding: 0.5rem;
+  }
+}

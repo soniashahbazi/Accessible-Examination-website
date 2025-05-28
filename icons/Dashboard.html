@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Accessible Examination Website</title>
+  <!-- Viewport meta for responsive design -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+  <!-- Skip link for WCAG compliance (keyboard users can jump to main content) -->
+  <a class="visually-hidden" href="#main-content">Skip to main content</a>
+
+  <!-- Fixed sidebar navigation -->
+  <nav aria-label="Main navigation">
+    <!-- LOGO CONTAINER -->
+    <div class="logo-container">
+      <img
+        src="icons/JKU Logo.png"
+        alt="JKU logo"
+        width="168" 
+        height="84"
+        class="logo"
+      >
+    </div>
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="Dashboard.html">
+            <!-- Icon (e.g., SVG or font icon) hidden from screen readers -->
+            <img 
+            src="icons/Dashboard.png" 
+            alt="" 
+            aria-hidden="true" 
+            width="24" 
+            height="22"
+            class="icon icon-dashboard"
+            >
+            <span>Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="Calendar.html">
+            <!-- Icon (e.g., SVG or font icon) hidden from screen readers -->
+            <img 
+            src="icons/Calender.png" 
+            alt="" 
+            aria-hidden="true" 
+            width="24" 
+            height="22"
+            class="icon icon-calender"
+            >
+            <span>Calendar</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="Accomodations.html">
+            <!-- Icon (e.g., SVG or font icon) hidden from screen readers -->
+            <img 
+            src="icons/Accomodation.png" 
+            alt="" 
+            aria-hidden="true" 
+            width="24" 
+            height="22"
+            class="icon icon-accomodation"
+            >
+            <span>Accommodations</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="ExamRegistration.html">
+            <!-- Icon (e.g., SVG or font icon) hidden from screen readers -->
+            <img 
+            src="icons/Exam Registration.png" 
+            alt="" 
+            aria-hidden="true" 
+            width="24" 
+            height="22"
+            class="icon icon-exam-registration"
+            >
+            <span>Exam Registration</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="MyExams.html">
+            <!-- Icon (e.g., SVG or font icon) hidden from screen readers -->
+            <img 
+            src="icons/My Exams.png" 
+            alt="" 
+            aria-hidden="true" 
+            width="24" 
+            height="22"
+            class="icon icon-my-exams"
+            >
+            <span>My Exams</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="Help.html">
+          <!-- Icon (e.g., SVG or font icon) hidden from screen readers -->
+          <img 
+          src="icons/Help.png" 
+          alt="" 
+          aria-hidden="true" 
+          width="24" 
+          height="22"
+          class="icon icon-help"
+          >
+          <span>Help</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- FIXED HEADER -->
+  <header class="top-header" role="banner">
+    <div class="header-content">
+        <!-- LEFT: Welcome Message -->
+        <div class="header-left">
+            <h1 class="welcome-heading">Welcome Sonia</h1>
+        </div>
+        <!-- MIDDLE: Search -->
+        <div class="header-middle">
+            <label for="searchDashboard" class="visually-hidden">
+                Search Dashboard
+            </label>
+            <input
+              id="searchDashboard"
+              type="search"
+              name="search"
+              placeholder="Search Dashboard"
+              aria-describedby="search-feedback"
+            />
+            <div id="search-feedback" class="visually-hidden" aria-live="polite"></div>            
+        </div>
+        <!-- RIGHT: Notification + Profile -->
+        <div class="header-right">
+            <!-- Notification bell -->
+            <button type="button" class="notification-bell" aria-label="View notifications">
+                <img
+                src="icons/Notif.png"
+                alt="Notification Icon"
+                />
+            </button>
+            <div
+              id="notification-panel"
+              class="notification-panel sr-only"
+              role="region"
+              aria-label="Notifications"
+            >
+              <header class="notification-header">
+                <span class="notification-title">Notifications</span>
+                <button
+                  type="button"
+                  id="notification-close"
+                  class="notification-close-btn"
+                  aria-label="Close notifications"
+                >
+                  ×
+                </button>
+              </header>
+            
+              <ul id="notification-list"></ul>
+            
+              <button
+                type="button"
+                id="notification-view-all"
+                class="btn btn-link"
+              >
+                View All
+              </button>
+            </div>
+            <!-- student profile -->
+            <div class="student-profile">
+                <img src="icons/Profile.png" alt="Profile picture of Sonia Shahbazi" />
+                <!-- A container for the two lines of text -->
+                <div class="profile-text">
+                  <span class="student-fullname">Sonia Shahbazi</span>
+                  <span class="student-id">k12139220</span>
+                </div>
+            </div>
+        </div>
+    </div>
+  </header>
+  <!-- Main content wrapper (pushed right by fixed nav) -->
+  <div class="content-wrapper" id="main-content">
+    
+    <!-- The "4 exams registered..." text is now in the dashboard page content only -->
+    <section data-section aria-labelledby="dashboard-overview">
+        <h2 id="dashboard-overview" class="visually-hidden">Dashboard Overview</h2>
+        <p id="overview">
+          You have <strong><span id="examCount">0</span></strong> exams registered this semester and <strong>1 upcoming exam</strong>.
+        </p>
+
+    <!-- Upcoming Exam Registration Deadlines Section -->
+    <section  data-section aria-labelledby="registration-deadlines" aria-describedby="registration-deadlines-desc">
+      <header class="exam-section-header">
+        <img src="icons/upcoming-header.png" alt="" aria-hidden="true" class="section-icon">
+        <h2 id="registration-deadlines" class="section-title">
+          Upcoming Exam Registration Deadlines
+        </h2>
+        <a href="ExamRegistration.html" class="view-all-link">
+          View all 
+          <img src="icons/viewall.png" alt="" aria-hidden="true" class="icon-chevron">
+        </a>
+      </header>
+      <p id="registration-deadlines-desc" class="visually-hidden">
+        List of exams that require registration before the mentioned deadline
+      </p>
+
+      <div class="table-container">
+        <table class="style-two">
+          <thead>
+            <tr>
+              <th scope="col">Exam Name</th>
+              <th scope="col">Registration Deadline</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="exam-name">Computer Forensics and IT Law</span><img src="icons/urgent.png" class="exam-icon urgent-icon" alt="Urgent icon"><span class="exam-urgent">Urgent</span></td>
+              <td>Nov 04, 2024 at 00:00</td>
+              <td>                
+                <a
+                href="CourseDetails.html?course=353.068"
+                class="btn register-btn"
+                aria-label="View details and register for Computer Forensics and IT Law"
+                role>
+                Register Now
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="exam-name">Biometric Identification</span></td>
+              <td>Jan 07, 2025 at 10:00</td>
+              <td>                
+                <a
+                href="CourseDetails.html?course=344.001"
+                class="btn register-btn"
+                aria-label="View details and register for Biometric Identification"
+                role>
+                Register Now
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="exam-name">Information Security Management</span></td>
+              <td>Jan 10, 2025 at 00:00</td>
+              <td>                
+                <a
+                href="CourseDetails.html?course=353.020"
+                class="btn register-btn"
+                aria-label="View details and register for Information Security Management"
+                role>
+                Register Now
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="exam-name">Introduction to IT Security</span></td>
+              <td>Jan 14, 2025 at 23:59</td>
+              <td>                
+                <a
+                href="CourseDetails.html?course=335.025"
+                class="btn register-btn"
+                aria-label="View details and register for Introduction to IT Security"
+                role>
+                Register Now
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section data-section aria-labelledby="deregistration-deadlines" aria-describedby="deregistration-deadlines-desc">
+      <header class="exam-section-header">
+        <img src="icons/upcoming-header.png" alt="" aria-hidden="true" class="section-icon">
+        <h2 id="deregistration-deadlines" class="section-title">
+          Upcoming Exam Deregistration Deadlines
+        </h2>
+        <a href="MyExams.html" class="view-all-link">
+          View all 
+          <img src="icons/viewall.png" alt="" aria-hidden="true" class="icon-chevron">
+        </a>
+      </header>
+      <p id="deregistration-deadlines-desc" class="visually-hidden">
+        List of exams that can be deregistered before the mentioned deadline
+      </p>
+      
+      <div class="table-container">
+        <table class="style-two">
+          <thead>
+            <tr>
+              <th scope="col">Exam Name</th>
+              <th scope="col">Deregistration Deadline</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="exam-name">AI & Law</span><img src="icons/urgent.png" class="exam-icon urgent-icon" alt="Urgent icon"><span class="exam-urgent">Urgent</span></td>
+              <td>Nov 04, 2024 at 10:00</td>
+              <td><button class="btn deregister-btn">Deregister</button></td>
+            </tr>
+            <tr>
+              <td><span class="exam-name">AI and Visualization</span><img src="icons/upcoming.png" class="exam-icon upcoming-icon" alt="Upcoming icon"><span class="exam-upcoming">Upcoming</span></td>
+              <td>Nov 08, 2024 at 14:00</td>
+              <td><button class="btn deregister-btn">Deregister</button></td>
+            </tr>
+            <tr>
+              <td><span class="exam-name">Computer Networks</span></td>
+              <td>Nov 12, 2024 at 01:00</td>
+              <td><button class="btn deregister-btn">Deregister</button></td>
+            </tr>
+            <tr>
+              <td><span class="exam-name">Mobile Communication</span></td>
+              <td>Nov 18, 2024 at 23:59</td>
+              <td><button class="btn deregister-btn">Deregister</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <!-- confirm‐deregister dialog -->
+  <dialog id="confirmDereg" aria-labelledby="confirmDeregTitle" aria-modal="true">
+    <h2 id="confirmDeregTitle">Confirm deregistration</h2>
+    <p id="confirmDeregMsg">Are you sure?</p>
+    <menu>
+      <button id="confirmYes" class="btn register-btn">Yes, deregister</button>
+      <button id="confirmNo"  class="btn deregister-btn">Cancel</button>
+    </menu>
+  </dialog>
+  <!-- live notification region -->
+  <div id="liveNotif" aria-live="polite" class="visually-hidden"></div>
+
+  <script src="js/main.js"></script>
+  <script type="module" src="js/notifications.js"></script>
+</body>
+</html>
