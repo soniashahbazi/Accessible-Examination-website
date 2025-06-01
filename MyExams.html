@@ -10,7 +10,7 @@
 
 <body>
   <!-- Skip link for WCAG compliance (keyboard users can jump to main content) -->
-  <a class="sr-only-focusable" href="#main-content">Skip to main content</a>
+  <a class="sr-only-focusable skip-to-main" href="#main-content">Skip to main content</a>
 
   <!-- Fixed sidebar navigation -->
   <nav aria-label="Main navigation">
@@ -154,7 +154,7 @@
                 </button>
               </div>
             
-              <ul id="notification-list"></ul>
+              <ul id="notification-list" role="list" aria-label="Notifications"></ul>
             
               <button
                 type="button"
@@ -177,7 +177,7 @@
     </div>
   </header>
   <!-- MAIN CONTENT AREA -->
-  <main id="main-content" class="content-wrapper" role="main">
+  <main id="main-content" tabindex="-1" class="content-wrapper" role="main">
     <div id="notification" aria-live="polite" class="sr-only"></div>
     <section aria-labelledby="my-exams-title" class="my-exams-section">
       <h2 id="my-exams-title" class="my-exams-heading">My Exams</h2>

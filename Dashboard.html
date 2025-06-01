@@ -10,7 +10,7 @@
 
 <body>
   <!-- Skip link for WCAG compliance (keyboard users can jump to main content) -->
-  <a class="sr-only-focusable" href="#main-content">Skip to main content</a>
+  <a class="sr-only-focusable skip-to-main" href="#main-content">Skip to main content</a>
 
   <!-- Fixed sidebar navigation -->
   <nav aria-label="Main navigation">
@@ -135,6 +135,10 @@
             </button>
             <div id="search-feedback" role="status" class="sr-only" aria-live="polite"></div>            
         </div>
+
+        <a href="#registration-results" class="sr-only-focusable skip-to-results" tabindex="-1" aria-hidden="true">Skip to registration results</a>
+        <a href="#deregistration-results" class="sr-only-focusable skip-to-results" tabindex="-1" aria-hidden="true">Skip to deregistration results</a>
+
         <!-- RIGHT: Notification + Profile -->
         <div class="header-right">
             <!-- Notification bell -->
@@ -170,7 +174,7 @@
                 </button>
               </div>
             
-              <ul id="notification-list"></ul>
+              <ul id="notification-list" role="list" aria-label="Notifications"></ul>
             
               <button
                 type="button"
@@ -193,12 +197,16 @@
     </div>
   </header>
   <!-- Main content wrapper (pushed right by fixed nav) -->
-  <main class="content-wrapper" id="main-content">
-    
+  <main class="content-wrapper" tabindex="-1" id="main-content" role="main">  
     <!-- The "4 exams registered..." text is now in the dashboard page content only -->
     <section aria-labelledby="dashboard-overview">
-      <h2 id="dashboard-overview" class="sr-only">Dashboard Overview</h2>
-      <p id="overview" aria-live="polite">
+      <h2 id="overview-heading" class="sr-only">Dashboard overview</h2>
+      <p
+        id="overview"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
         You have
           <strong><span id="examCount">0</span></strong>
           registered
@@ -225,8 +233,10 @@
       <p id="registration-deadlines-desc" class="sr-only">
         List of exams that require registration before the mentioned deadline
       </p>
+      <div id="registration-results-feedback" class="sr-only" aria-live="polite" role="status"></div>
 
       <div class="table-container">
+        <div id="registration-results" tabindex="-1"></div>
         <table id="registration-deadlines-table" class="style-two">
           <caption class="sr-only">Upcoming Exam Registration Deadlines</caption>
           <thead>
@@ -257,8 +267,10 @@
       <p id="deregistration-deadlines-desc" class="sr-only">
         List of exams that can be deregistered before the mentioned deadline
       </p>
+      <div id="deregistration-results-feedback" class="sr-only" aria-live="polite" role="status"></div>
       
       <div class="table-container">
+        <div id="deregistration-results" tabindex="-1"></div>
         <table id="deregistration-deadlines-table" class="style-two">
           <caption class="sr-only">Upcoming Exam Deregistration Deadlines</caption>
           <thead>

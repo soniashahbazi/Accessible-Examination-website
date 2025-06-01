@@ -10,7 +10,7 @@
 
 <body>
   <!-- Skip link for WCAG compliance (keyboard users can jump to main content) -->
-  <a class="sr-only-focusable" href="#main-content">Skip to main content</a>
+  <a class="sr-only-focusable skip-to-main" href="#main-content">Skip to main content</a>
 
   <!-- Fixed sidebar navigation -->
   <nav aria-label="Main navigation">
@@ -154,7 +154,7 @@
                 </button>
               </div>
             
-              <ul id="notification-list"></ul>
+              <ul id="notification-list" role="list" aria-label="Notifications"></ul>
             
               <button
                 type="button"
@@ -176,21 +176,22 @@
         </div>
     </div>
   </header>
-  <main id="main-content" class="content-wrapper" role="main">
+  <main id="main-content" tabindex="-1" class="content-wrapper" role="main">
     <section class="calendar-section" aria-labelledby="calendar-title">
       <h2 id="calendar-title" class="sr-only">Interactive Calendar</h2>
+      <a href="#" class="sr-only" id="calendar-focus-anchor">Skip to first calendar event</a>
   
       <div class="calendar-header">
+        <div class="calendar-view-buttons" role="group" aria-label="Calendar View Options">
+          <button class="view-toggle" data-view="month" aria-pressed="true">Month</button>
+          <button class="view-toggle" data-view="week" aria-pressed="false">Week</button>
+          <button class="view-toggle" data-view="day" aria-pressed="false">Day</button>          
+        </div>
         <div class="calendar-nav">
           <button class="calendar-nav-btn prev-btn" aria-label="Previous month/week/day">&lt;</button>
-          <span class="calendar-current-date" aria-live="polite">Nov 2024</span>
+          <span class="calendar-current-date">Nov 2024</span>
+          <span class="sr-only calendar-current-sr" aria-live="polite" role="status" tabindex="-1"></span>
           <button class="calendar-nav-btn next-btn" aria-label="Next month/week/day">&gt;</button>
-        </div>
-  
-        <div class="calendar-view-buttons" role="group" aria-label="Calendar View Options">
-          <button class="view-toggle" data-view="day" aria-pressed="false">Day</button>
-          <button class="view-toggle" data-view="week" aria-pressed="false">Week</button>
-          <button class="view-toggle" data-view="month" aria-pressed="true">Month</button>
         </div>
       </div>
   
@@ -200,13 +201,27 @@
           <caption class="sr-only">Monthly Calendar View</caption>
           <thead>
             <tr>
-              <th scope="col" aria-label="Monday">Mon</th>
-              <th scope="col" aria-label="Tuesday">Tue</th>
-              <th scope="col" aria-label="Wednesday">Wed</th>
-              <th scope="col" aria-label="Thursday">Thu</th>
-              <th scope="col" aria-label="Friday">Fri</th>
-              <th scope="col" aria-label="Saturday" class="weekend">Sat</th>
-              <th scope="col" aria-label="Sunday" class="weekend">Sun</th>
+              <th scope="col">
+                <span class="sr-only">Monday</span><span aria-hidden="true">Mon</span>
+              </th>
+              <th scope="col">
+                <span class="sr-only">Tuesday</span><span aria-hidden="true">Tue</span>
+              </th>
+              <th scope="col">
+                <span class="sr-only">Wednesday</span><span aria-hidden="true">Wed</span>
+              </th>
+              <th scope="col">
+                <span class="sr-only">Thursday</span><span aria-hidden="true">Thu</span>
+              </th>
+              <th scope="col">
+                <span class="sr-only">Friday</span><span aria-hidden="true">Fri</span>
+              </th>
+              <th scope="col" class="weekend">
+                <span class="sr-only">Saturday</span><span aria-hidden="true">Sat</span>
+              </th> 
+              <th scope="col" class="weekend">
+                <span class="sr-only">Sunday</span><span aria-hidden="true">Sun</span>
+              </th>                             
             </tr>
           </thead>
           <tbody id="month-body">

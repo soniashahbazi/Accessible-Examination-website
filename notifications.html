@@ -130,6 +130,16 @@
             <!-- Announces how many notifications match -->
             <p id="notification-result-count" class="sr-only" aria-live="polite"></p>
         </div>
+        
+        <!-- Skip to search results for screen-readers and keyboard users -->
+        <a
+          href="#full-notification-list"
+          class="skip-to-results sr-only-focusable"
+          aria-hidden="true"
+        >
+          Skip to notifications
+        </a>
+
         <!-- RIGHT: Notification + Profile -->
         <div class="header-right">
             <!-- Notification bell -->
@@ -193,7 +203,7 @@
     </ol>
   </nav>
 
-  <main id="main-content" class="content-wrapper" role="main">
+  <main id="main-content" tabindex="-1" class="content-wrapper" role="main">
     <section class="notification-section">
       <div class="notification-header-bar">
         <button

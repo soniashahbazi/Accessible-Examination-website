@@ -110,8 +110,8 @@ document.addEventListener('DOMContentLoaded', () => {
       srIntro.textContent = `Course details loaded: ${meta.title}. ${sessionCount} exam session${sessionCount === 1 ? '' : 's'} available.`;
     }
 
-
   examList.innerHTML = '';
+  
   if (sessions.length === 0) {
     examList.innerHTML = '<p>No available exam sessions.</p>';
   } else {
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const art = document.createElement('article');
       art.className = `exam-card status-${status}`;
-      art.setAttribute('aria-labelledby', `exam-date-${i}`);
+      art.setAttribute('tabindex', '-1');
       art.innerHTML = `
         <ul class="exam-details">
           <li>
@@ -154,7 +154,14 @@ document.addEventListener('DOMContentLoaded', () => {
           <li>
             <img src="${iconPath('exam-time.png')}" alt="" aria-hidden="true" />
             <strong>Exam Time:</strong>
-            ${formatTime(e.examStart)} – ${formatTime(e.examEnd)}
+            <time datetime="${e.examStart.toISOString()}">
+              ${formatTime(e.examStart)}
+            </time>
+            <span aria-hidden="true"> – </span>
+            <span class="sr-only"> to </span>
+            <time datetime="${e.examEnd.toISOString()}">
+              ${formatTime(e.examEnd)}
+            </time>
           </li>
           <li>
             <img src="${iconPath('exam-location.png')}" alt="" aria-hidden="true" />
@@ -188,18 +195,28 @@ document.addEventListener('DOMContentLoaded', () => {
   // ——————— SEARCH FILTER FOR “Not Registered” SESSIONS ———————
   const searchInput = document.getElementById('searchCourseDetails');
   const clearBtn = document.getElementById('clearSearchBtn');
-  if (clearBtn && searchInput) {
-    const toggleClearBtn = () => {
-      clearBtn.style.display = searchInput.value.trim() ? 'flex' : 'none';
-    };
-    toggleClearBtn();
-    searchInput.addEventListener('input', toggleClearBtn);
-    clearBtn.addEventListener('click', () => {
-      searchInput.value = '';
-      searchInput.dispatchEvent(new Event('input'));
-      searchInput.focus();
-      toggleClearBtn();
-    });
+  if (searchInput) {
+    searchInput.parentElement.style.display = sessions.length < 2 ? 'none' : '';
+
+    if (clearBtn) {
+      const toggleClear = () => clearBtn.style.display = searchInput.value.trim() ? 'flex' : 'none';
+      toggleClear();
+      searchInput.addEventListener('input', toggleClear);
+      clearBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        searchInput.dispatchEvent(new Event('input'));
+        searchInput.focus();
+        toggleClearBtn();
+
+        // Also hide the skip-to-results link
+        const skipLink = document.querySelector('a[href="#accommodation-list"]');
+        if (skipLink) {
+          skipLink.classList.add('sr-only');
+          skipLink.setAttribute('aria-hidden', 'true');
+          skipLink.setAttribute('tabindex', '-1');
+        }
+      });
+    }
   }
   const resultCount = document.getElementById('course-details-result-count');
   if (searchInput) {
@@ -221,6 +238,19 @@ document.addEventListener('DOMContentLoaded', () => {
             ? ''
             : `${visibleCount} session${visibleCount === 1 ? '' : 's'} found.`;
       }
+      const skipLink = document.querySelector('.skip-to-results[href="#session-results"]');
+      if (skipLink) {
+        if (term && visibleCount > 0 && searchInput.offsetParent !== null) { 
+          skipLink.classList.remove('sr-only');
+          skipLink.removeAttribute('aria-hidden');
+          skipLink.setAttribute('tabindex', '0');
+        } else {
+          skipLink.classList.add('sr-only');
+          skipLink.setAttribute('aria-hidden', 'true');
+          skipLink.setAttribute('tabindex', '-1');
+        }
+      }
+
     });
   }
 
@@ -262,5 +292,40 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => window.history.back(), 500);
     }
   });
+
+  // ① Grab the skip link
+  const skipLink = document.querySelector('.skip-to-results[href="#session-results"]');
+  if (skipLink) {
+    skipLink.addEventListener('click', evt => {
+      evt.preventDefault();
+      const firstVisible = document.querySelector(
+        '#session-results article.exam-card:not([hidden])'
+      );
+      if (!firstVisible) return;
+
+      // 1) Temporarily unhide our sr-only summary
+      const summary = firstVisible.querySelector('h4.sr-only');
+      if (summary) summary.removeAttribute('aria-hidden');
+
+      // new: focus the Register button/link
+      const registerLink = firstVisible.querySelector(
+        'button.view-register-btn, a.register-btn'
+      );
+      if (registerLink) {
+        registerLink.focus({ preventScroll: false });
+      } else {
+        // fallback to the card itself
+        firstVisible.setAttribute('tabindex','-1');
+        firstVisible.focus({ preventScroll: false });
+}
+
+
+      // 3) After a brief pause, re-hide the summary so normal reading falls back to the full list
+      setTimeout(() => {
+        if (summary) summary.setAttribute('aria-hidden', 'true');
+      }, 500);
+    });
+
+  }
 
 });

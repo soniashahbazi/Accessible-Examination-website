@@ -33,38 +33,45 @@ document.addEventListener('DOMContentLoaded', () => {
       list.innerHTML = '<li class="no-notifications-msg">No notifications</li>';
     } else {
       list.innerHTML = items.map(n => {
-        const dt = new Date(n.timestamp).toLocaleString(undefined, {
-          dateStyle: 'short',
-          timeStyle: 'short'
-        });
-
         let typeClass = '';
         if (n.title === 'Registration Confirmation') typeClass = 'notif-registration';
         else if (n.title === 'Deregistration Confirmation') typeClass = 'notif-deregistration';
-        else if (n.title === 'Registration Approval')      typeClass = 'notif-registration-approval';
+        else if (n.title === 'Registration Approval') typeClass = 'notif-registration-approval';
 
         const cls = `${n.read ? '' : 'notification-unread'} ${typeClass}`.trim();
+        const plainMsg = n.msg.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+        const ariaDescription = `${n.title}: ${plainMsg}`;
+        let courseMatch = n.msg.match(/“([^”]+)”/);
+        if (!courseMatch) {
+          courseMatch = n.msg.match(/^([^!:.]+?) exam/i); // fallback match
+        }
+        const courseName = courseMatch ? courseMatch[1].trim() : 'this course';
+        const dismissLabel = `Dismiss ${n.title} for ${courseName}`;
 
         return `
-          <li role="listitem" class="notif-item notif-item--small ${n.read ? 'read' : 'unread'} ${typeClass}" data-timestamp="${n.timestamp}">
+          <li
+            role="listitem"
+            tabindex="0"
+            aria-label="${ariaDescription}"
+            class="notif-item notif-item--small ${n.read ? 'read' : 'unread'} ${typeClass}"
+            data-timestamp="${n.timestamp}"
+          >
             <div class="notif-header-bar">
               <div class="notif-title-container">
                 <div class="notif-icon ${typeClass}-icon" aria-hidden="true"></div>
                 <div class="notif-title">${n.title}</div>
-              </div> 
-              <button class="notif-close-btn" aria-label="Dismiss notification">×</button>
+              </div>
+              <button class="notif-close-btn" aria-label="${dismissLabel}">×</button>
             </div>
-            <div class="notif-msg"> 
-              ${n.msg.includes('Exam Location:') 
-                ? n.msg.replace( 
-                    ' Exam Location:', 
-                    '<br><span class="notif-location">Exam Location:' 
-                  ) + '</span>' 
-                : n.msg} 
+            <div class="notif-msg">
+              ${n.msg.includes('Exam Location:')
+                ? n.msg.replace(' Exam Location:', '<br><span class="notif-location">Exam Location:') + '</span>'
+                : n.msg}
             </div>
           </li>
         `;
       }).join('');
+
     }
 
     // Bind close buttons after rendering
@@ -76,16 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Announce newest for screen‐readers
-  function announceLatest() {
-    // grab only the unread ones
-    const unreadItems = getNotifications().filter(n => !n.read);
-    if (unreadItems.length && liveNotif) {
-      // update the hidden live region — never remove sr-only
-      liveNotif.textContent = unreadItems[0].msg;
-    }
-  }
-
+  announceLatest()
   
   // ■ Toggle panel open/close (using hidden + focus management)
   bell.addEventListener('click', () => {
@@ -130,4 +128,15 @@ document.addEventListener('DOMContentLoaded', () => {
   renderNotifications();
   
 });
+function announceLatest() {
+  const unreadItems = getNotifications().filter(n => !n.read);
+  if (unreadItems.length && liveNotif) {
+    // Force change: clear + delay before setting content
+    liveNotif.textContent = '';
+    setTimeout(() => {
+      liveNotif.textContent = `New notification: ${unreadItems[0].msg}`;
+    }, 100); // this delay helps screen readers perceive change
+  }
+}
+
 

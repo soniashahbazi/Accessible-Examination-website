@@ -1,5 +1,47 @@
 // Use examService for dynamic events
 import { getRegisteredExams, getAvailableExams } from './examService.js';
+function formatOrdinalDay(date) {
+  const d = date.getDate();
+  const suffix = (d % 10 === 1 && d !== 11) ? 'st' :
+                (d % 10 === 2 && d !== 12) ? 'nd' :
+                (d % 10 === 3 && d !== 13) ? 'rd' : 'th';
+  return `${d}${suffix}`;
+}
+
+function focusFirstEvent() {
+  // 1) Normalize the fixed todayDate (“2024-11-01”) to midnight
+  const today = new Date(todayDate);
+  today.setHours(0,0,0,0);
+
+  // 2) Grab all tabbable events
+  const allEvents = Array.from(
+    document.querySelectorAll('.calendar-event[tabindex]')
+  );
+
+  // 3) Keep only those whose data-date ≥ today
+  const upcoming = allEvents.filter(el => {
+    const d = new Date(el.getAttribute('data-date'));
+    d.setHours(0,0,0,0);
+    return d >= today;
+  });
+
+  // 4) Focus the 1st future/today event, or else the very first
+  const target = upcoming[0] || allEvents[0];
+  if (target) target.focus();
+}
+
+//Format full week range for aria-label
+function formatWeekRangeForAria(start, end) {
+  const startMonth = start.toLocaleDateString('en-US', { month: 'long' });
+  const endMonth = end.toLocaleDateString('en-US', { month: 'long' });
+  const year = end.getFullYear(); // Always use end's year
+
+  if (start.getMonth() === end.getMonth()) {
+    return `from ${startMonth} ${formatOrdinalDay(start)} to ${formatOrdinalDay(end)}, ${year}`;
+  } else {
+    return `from ${startMonth} ${formatOrdinalDay(start)} to ${endMonth} ${formatOrdinalDay(end)}, ${year}`;
+  }
+}
 if (document.querySelector('.calendar-current-date')) {
     // Generate events dynamically
     function generateEvents() {
@@ -34,34 +76,113 @@ if (document.querySelector('.calendar-current-date')) {
   
     // Split title into label (with colon) and course name
     function createEventElement(event) {
+      // 1) split the title into label + course
       const idx        = event.title.indexOf(':');
       const labelText  = idx >= 0 ? event.title.slice(0, idx + 1) : '';
       const courseText = idx >= 0 ? event.title.slice(idx + 1).trim() : event.title;
-  
+
+      // 2) build the <a> exactly as before
       const a = document.createElement('a');
-      // **deregistration** now goes to MyExams.html
-      if (event.category === 'exam-date' || event.category === 'deregistration-deadline')
+      if (event.category === 'exam-date' || event.category === 'deregistration-deadline') {
         a.href = 'MyExams.html';
-      else
+      } else {
         a.href = 'ExamRegistration.html';
-  
+      }
       a.className = `calendar-event ${event.category}`;
       a.setAttribute('tabindex', 0);
-  
-      const startTime = new Date(event.start)
-        .toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      const endTime = new Date(event.end)
-        .toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  
-      a.setAttribute(
-        'aria-label',
-        `${labelText} ${courseText}, from ${startTime} to ${endTime}`
-      );
-  
+
+      // 3) figure out the true window for deadlines
+      const rawStart = new Date(event.start);
+      const rawEnd   = new Date(event.end);
+      let displayStart = new Date(rawStart);
+      let displayEnd   = new Date(rawEnd);
+
+      if (event.category === 'registration-deadline' ||
+          event.category === 'deregistration-deadline') {
+
+        if (currentView === 'week') {
+          // ── WEEK VIEW: treat a midnight‐only end as "next day at 00:00"
+          if (displayEnd.getHours() === 0 &&
+              displayEnd.getMinutes() === 0 &&
+              displayEnd.getSeconds() === 0) {
+            displayEnd = new Date(displayEnd.getTime() + 24 * 60*60*1000);
+          }
+          // then window = one hour before that
+          displayStart = new Date(displayEnd.getTime() - 60*60*1000);
+
+        } else if (currentView === 'day') {
+          // ── DAY VIEW: pull the registrationStart if it exists,
+          // or else default to 08:00; for deregistration, 08:00 always
+          const allExams = [
+            ...getAvailableExams({ onlyActive: false }),
+            ...getRegisteredExams()
+          ];
+          const match = allExams.find(e =>
+            e.registrationDeadline?.toISOString() === rawEnd.toISOString() ||
+            e.deregistrationDeadline?.toISOString() === rawEnd.toISOString()
+          );
+
+          // start‐of‐day anchor at 08:00
+          const startOfDay = new Date(rawEnd);
+          startOfDay.setHours(8, 0, 0, 0);
+
+          if (event.category === 'registration-deadline') {
+            displayStart = match?.registrationStart
+              ? new Date(match.registrationStart)
+              : startOfDay;
+          } else {
+            displayStart = startOfDay;
+          }
+
+          // if the deadline is at midnight, treat end as 23:59 of that day
+          if (displayEnd.getHours() === 0 &&
+              displayEnd.getMinutes() === 0 &&
+              displayEnd.getSeconds() === 0) {
+            displayEnd = new Date(rawEnd);
+            displayEnd.setHours(23, 59, 0, 0);
+          }
+        }
+      }
+
+      // 4) format for SR
+      const startTime = displayStart.toLocaleTimeString([], {
+        hour: '2-digit', minute: '2-digit'
+      });
+      const endTime = displayEnd.toLocaleTimeString([], {
+        hour: '2-digit', minute: '2-digit'
+      });
+
+      if (currentView === 'week') {
+        if (event.category === 'registration-deadline' || event.category === 'deregistration-deadline') {
+          a.setAttribute(
+            'aria-label',
+            `${labelText.replace(':', '').toLowerCase()} ${courseText} at ${endTime}`
+          );
+        } else {
+          a.setAttribute(
+            'aria-label',
+            `${labelText} ${courseText}, from ${startTime} to ${endTime}`
+          );
+        }
+      } else if (currentView === 'day') {
+        a.setAttribute(
+          'aria-label',
+          `${labelText} ${courseText}, from ${startTime} to ${endTime}`
+        );
+      } else {
+        a.setAttribute(
+          'aria-label',
+          `${labelText} ${courseText}`
+        );
+      }
+
+
+      // 5) keep the visual card free of times
       a.innerHTML = `
         <span class="event-label">${labelText}</span>
-        <span class="event-course">${courseText}</span>
+        <span class="event-title">${courseText}</span>
       `;
+
       return a;
     }
   
@@ -77,37 +198,82 @@ if (document.querySelector('.calendar-current-date')) {
       week:  document.getElementById('week-view'),
       day:   document.getElementById('day-view')
     };
-  
+
     function updateCalendarHeader() {
+      const srHeader = document.querySelector('.calendar-current-sr');
+
       if (currentView === 'month') {
-        calendarHeader.textContent = currentDate.toLocaleDateString('en-US', {
-          month: 'long', year: 'numeric'
+        const visualText = currentDate.toLocaleDateString('en-US', {
+          month: 'long',
+          year: 'numeric'
         });
+
+        calendarHeader.textContent = visualText;
+        if (srHeader) {
+          srHeader.textContent = visualText;
+        }
+
       } else if (currentView === 'week') {
         const start = new Date(currentDate);
         const diff = (start.getDay() + 6) % 7;
         start.setDate(currentDate.getDate() - diff);
         const end = new Date(start);
         end.setDate(end.getDate() + 6);
-      
-        // Check if the start and end months are the same
-        if (start.getMonth() === end.getMonth()) {
-          calendarHeader.textContent = `${start.toLocaleDateString('en-US', {
-            month: 'long',
-            day: 'numeric'  
-          })} - ${end.getDate()}, ${start.getFullYear()}`; 
-        } else {
-          calendarHeader.textContent =
-            `${start.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}` +
-            ' – ' +
-            `${end.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`;
+
+        const isSameMonth = start.getMonth() === end.getMonth();
+
+        const visualText = isSameMonth
+          ? `${start.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })} – ${end.getDate()}, ${end.getFullYear()}`
+          : `${start.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })} – ${end.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`;
+
+        const screenReaderText = isSameMonth
+          ? `Week of ${start.toLocaleDateString('en-US', { month: 'long' })} ${formatOrdinalDay(start)} to ${formatOrdinalDay(end)}, ${end.getFullYear()}`
+          : `Week of ${start.toLocaleDateString('en-US', { month: 'long' })} ${formatOrdinalDay(start)} to ${end.toLocaleDateString('en-US', { month: 'long' })} ${formatOrdinalDay(end)}, ${end.getFullYear()}`;
+
+        calendarHeader.textContent = visualText;
+        if (srHeader) {
+          srHeader.textContent = screenReaderText;
         }
+
       } else {
-        const monthDay = currentDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
-        const weekday = currentDate.toLocaleDateString('en-US', { weekday: 'long' });
-        calendarHeader.textContent = `${monthDay}, ${weekday}`; // Format: "November 3, Friday"
+        const visualText = currentDate.toLocaleDateString('en-US', {
+          month: 'long',
+          day: 'numeric'
+        });
+
+        const screenReaderText = currentDate.toLocaleDateString('en-US', {
+          weekday: 'long',
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric'
+        });
+
+        calendarHeader.textContent = `${visualText}, ${currentDate.toLocaleDateString('en-US', { weekday: 'long' })}`;
+        if (srHeader) {
+          srHeader.textContent = screenReaderText;
+        }
+      }
+
+      // Update next/previous buttons' aria-labels
+      const nextBtn = document.querySelector('.next-btn');
+      const prevBtn = document.querySelector('.prev-btn');
+
+      if (currentView === 'month') {
+        const nextMonth = getNextMonthString(currentDate);
+        const prevMonth = getPrevMonthString(currentDate);
+        nextBtn.setAttribute('aria-label', `Next month, ${nextMonth}`);
+        prevBtn.setAttribute('aria-label', `Previous month, ${prevMonth}`);
+      } else if (currentView === 'week') {
+        nextBtn.setAttribute('aria-label', `Next week, ${getNextWeekRangeString(currentDate)}`);
+        prevBtn.setAttribute('aria-label', `Previous week, ${getPrevWeekRangeString(currentDate)}`);
+      } else {
+        nextBtn.setAttribute('aria-label', `Next day, ${getNextDayString(currentDate)}`);
+        prevBtn.setAttribute('aria-label', `Previous day, ${getPrevDayString(currentDate)}`);
       }
     }
+
+
+
   
     // ───────────────────────────────────────────────────────────
     // MONTH, WEEK & DAY renderers (unchanged except for “today”)
@@ -221,7 +387,80 @@ if (document.querySelector('.calendar-current-date')) {
         tbody.appendChild(row);
       }
       table.appendChild(tbody);
+      reorderTabbing(); // ✅ Ensure it's called here AFTER rendering events
     }
+    function reorderTabbing() {
+      // Only run in week‐view (when the .week-table exists)
+      const table = document.querySelector('.week-table');
+      if (!table) return;
+
+      let tabIndex = 1;
+
+      // 1) Give each view-toggle (Month → Week → Day) the first tabindex values
+      document.querySelectorAll('.view-toggle').forEach((btn) => {
+        btn.setAttribute('tabindex', String(tabIndex++));
+      });
+
+      // 2) Then give “Prev” ↔︎ “Next” their tabindexes
+      const prevBtn = document.querySelector('.prev-btn');
+      const nextBtn = document.querySelector('.next-btn');
+      if (prevBtn) prevBtn.setAttribute('tabindex', String(tabIndex++));
+      if (nextBtn) nextBtn.setAttribute('tabindex', String(tabIndex++));
+
+      // 3) Now walk the week‐table columns (Mon → Tue → … → Sun) and number each event
+      const rows = Array.from(table.querySelectorAll('tbody tr')).slice(1);
+      const matrix = Array(7).fill(null).map(() => []);
+      rows.forEach((row) => {
+        const cells = row.querySelectorAll('td');
+        cells.forEach((cell, colIdx) => {
+          if (colIdx > 0) {
+            // colIdx=0 is the time label column; shift 1–7 → 0–6
+            matrix[colIdx - 1].push(cell);
+          }
+        });
+      });
+
+      matrix.forEach((colCells) => {
+        colCells.forEach((cell) => {
+          // “[tabindex]” finds exactly those <a> links you created, since they all start with tabindex="0"
+          const links = cell.querySelectorAll('[tabindex]');
+          links.forEach((link) => {
+            link.setAttribute('tabindex', String(tabIndex++));
+          });
+        });
+      });
+
+      // 4) Finally, strip the hidden “skip to first event” anchor out of the tab flow
+      const skipAnchor = document.getElementById('calendar-focus-anchor');
+      if (skipAnchor) {
+        skipAnchor.setAttribute('tabindex', '-1');
+      }
+    }
+
+    /**
+     * Removes any positive tabindex attributes that reorderTabbing() applied in week view.
+     * After calling this, view-toggles, Prev/Next, and leftover week-event links
+     * will return to their default tab behavior.
+     */
+    function resetTabbing() {
+      // 1) Remove explicit tabindex from the three .view-toggle buttons:
+      document.querySelectorAll('.view-toggle').forEach(btn => {
+        btn.removeAttribute('tabindex');
+      });
+
+      // 2) Remove explicit tabindex from .prev-btn and .next-btn:
+      const prevBtn = document.querySelector('.prev-btn');
+      const nextBtn = document.querySelector('.next-btn');
+      if (prevBtn) prevBtn.removeAttribute('tabindex');
+      if (nextBtn) nextBtn.removeAttribute('tabindex');
+
+      // 3) (Optional cleanup) Any event links that remain in .week-table:
+      //    reset them back to tabindex="0" so they behave normally in month/day.
+      document.querySelectorAll('.week-table [tabindex]').forEach(el => {
+        el.setAttribute('tabindex', '0');
+      });
+    }
+
   
     function renderDayTable() {
       const tbody = document.querySelector(".day-table tbody");
@@ -289,8 +528,14 @@ if (document.querySelector('.calendar-current-date')) {
             link.textContent = `+${moreCount} more`;
             link.setAttribute(
               'aria-label',
-              `${moreCount} more events on ${cellDate.toLocaleDateString()}`
+              `${moreCount} more events for ${cellDate.toLocaleDateString('en-US', {
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
+              })}`
             );
+
             link.addEventListener('click', e => {
               e.preventDefault();
               currentDate = cellDate;
@@ -448,28 +693,45 @@ if (document.querySelector('.calendar-current-date')) {
           });
         });
       }
-      
-      
-      
+           
     }
     // ───────────────────────────────────────────────────────────
     // view–switching & prev/next
     // ───────────────────────────────────────────────────────────
     function switchView(view) {
       currentView = view;
+
       for (let k in views) {
-        views[k].style.display      = (k === view ? 'block' : 'none');
+        views[k].style.display = (k === view ? 'block' : 'none');
         views[k].setAttribute('aria-hidden', k !== view);
       }
-      viewButtons.forEach(b => b.setAttribute(
-        'aria-pressed',
-        b.dataset.view === view
-      ));
+
+      viewButtons.forEach(b =>
+        b.setAttribute('aria-pressed', b.dataset.view === view)
+      );
+
       updateCalendarHeader();
-      if (view === 'month') renderMonthTable();
-      if (view === 'week')  renderWeekTable();
-      if (view === 'day')   renderDayTable();
+
+      if (view === 'month') {
+        renderMonthTable();
+      }
+
+      if (view === 'week') {
+        renderWeekTable();
+        resetTabbing();
+      }
+
+      if (view === 'day') {
+        renderDayTable();
+        resetTabbing();
+      }
+
       renderEvents();
+
+      if (view === 'week') {
+        reorderTabbing();
+        focusFirstEvent(); 
+      }
     }
   
     // Prev button
@@ -520,18 +782,47 @@ if (document.querySelector('.calendar-current-date')) {
     window.addEventListener('app:update', renderCalendar);
   });
   
-  /**
-   * Parse “DD/MM/YYYY” or “DD/MM/YYYY at HH:MM” into a JS Date.
-   */
-  function parseCustomDateTime(str) {
-    // split off optional time
-    const [datePart, timePart] = str.split(' at ');
-    const [d, m, y]            = datePart.split('/').map(Number);
-    // default to midnight if no time
-    let hh = 0, mm = 0;
-    if (timePart) {
-      [hh, mm] = timePart.split(':').map(Number);
-    }
-    // month is zero-based
-    return new Date(y, m - 1, d, hh, mm);
-  }
+
+  function getNextMonthString(date) {
+  const next = new Date(date);
+  next.setMonth(date.getMonth() + 1);
+  return next.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+}
+
+function getPrevMonthString(date) {
+  const prev = new Date(date);
+  prev.setMonth(date.getMonth() - 1);
+  return prev.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+}
+
+function getNextWeekRangeString(date) {
+  const nextStart = new Date(date);
+  nextStart.setDate(date.getDate() + 7);
+  const nextEnd = new Date(nextStart);
+  nextEnd.setDate(nextStart.getDate() + 6);
+  return formatWeekRangeForAria(nextStart, nextEnd);
+}
+
+function getPrevWeekRangeString(date) {
+  const prevStart = new Date(date);
+  prevStart.setDate(date.getDate() - 7);
+  const prevEnd = new Date(prevStart);
+  prevEnd.setDate(prevStart.getDate() + 6);
+  return formatWeekRangeForAria(prevStart, prevEnd);
+}
+
+
+
+function getNextDayString(date) {
+  const next = new Date(date);
+  next.setDate(date.getDate() + 1);
+  return next.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+}
+
+function getPrevDayString(date) {
+  const prev = new Date(date);
+  prev.setDate(date.getDate() - 1);
+  return prev.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+}
+
+

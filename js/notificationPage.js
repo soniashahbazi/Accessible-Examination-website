@@ -52,77 +52,105 @@ function renderFullNotifications() {
 
 function wireSearchFilter() {
   const searchInput = document.getElementById('searchNotifications');
-  const clearBtn = document.getElementById('clearSearchBtn');
-  const container =
-    document.getElementById('full-notification-list') ||
-    document.getElementById('notification-list');
-  const resultCount = document.getElementById('notification-result-count');
-
-  if (clearBtn && searchInput) {
-    const toggleClearBtn = () => {
-      clearBtn.style.display = searchInput.value.trim() ? 'flex' : 'none';
-    };
-    toggleClearBtn();
-    searchInput.addEventListener('input', toggleClearBtn);
-    clearBtn.addEventListener('click', () => {
-      searchInput.value = '';
-      searchInput.dispatchEvent(new Event('input'));
-      searchInput.focus();
-      toggleClearBtn();
-    });
-  }
+  const clearBtn     = document.getElementById('clearSearchBtn');
+  const container    = document.getElementById('full-notification-list')
+                      || document.getElementById('notification-list');
+  const resultCount  = document.getElementById('notification-result-count');
+  const skipLink     = document.querySelector('.skip-to-results[href="#full-notification-list"]');
 
   if (!searchInput || !container) {
     console.warn('Notification search or container not found');
     return;
   }
 
-  searchInput.setAttribute('aria-controls', container.id);
+  // Make our live-region polite and atomic
   if (resultCount) {
     resultCount.setAttribute('role', 'status');
     resultCount.setAttribute('aria-live', 'polite');
     resultCount.setAttribute('aria-atomic', 'true');
   }
 
+  // 1️⃣ Clear-button show/hide
+  if (clearBtn) {
+    const toggleClear = () => {
+      clearBtn.style.display = searchInput.value.trim() ? 'flex' : 'none';
+    };
+    toggleClear();
+    searchInput.addEventListener('input', toggleClear);
+    clearBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      searchInput.dispatchEvent(new Event('input'));
+      searchInput.focus();
+      toggleClear();
+    });
+  }
+
+  // 2️⃣ Skip link click → focus first visible notification
+  if (skipLink && !skipLink._attached) {
+    skipLink._attached = true;
+    skipLink.addEventListener('click', evt => {
+      evt.preventDefault();
+      const firstVisible = Array.from(
+        container.querySelectorAll('.notif-item')
+      ).find(item => item.style.display !== 'none');
+      if (firstVisible) {
+        firstVisible.setAttribute('tabindex', '-1');
+        firstVisible.focus({ preventScroll: false });
+      }
+    });
+  }
+
+  // 3️⃣ Main search handler
   searchInput.addEventListener('input', () => {
     const term = searchInput.value.trim().toLowerCase();
 
-    const oldMsg = container.querySelector('.no-notif-msg');
-    if (oldMsg) oldMsg.remove();
-
+    // if empty, re-render full set
     if (term === '') {
-      if (container.id === 'full-notification-list') {
-        renderFullNotifications();
-      }
+      renderFullNotifications();
       if (resultCount) resultCount.textContent = '';
+      if (skipLink)   skipLink.setAttribute('aria-hidden', 'true');
       return;
     }
 
-    const items = Array.from(
-      container.querySelectorAll('.notif-item, .notif-item--small')
-    );
-
+    // filter each .notif-item by title+msg
+    const items = Array.from(container.querySelectorAll('.notif-item'));
     let visible = 0;
+
     items.forEach(item => {
-      const match = item.textContent.toLowerCase().includes(term);
+      const text = item.querySelector('.notif-title').textContent +
+                   ' ' +
+                   item.querySelector('.notif-msg').textContent;
+      const match = text.toLowerCase().includes(term);
       item.style.display = match ? '' : 'none';
       if (match) visible++;
     });
 
+    // if none matched, show a single “no notifications found” line
+    let noMsg = container.querySelector('.no-notif-msg');
     if (visible === 0) {
-      const msg = document.createElement('p');
-      msg.className = 'no-notif-msg';
-      msg.setAttribute('role', 'status');
-      msg.setAttribute('aria-live', 'polite');
-      msg.textContent = 'No notifications found.';
-      container.appendChild(msg);
+      if (!noMsg) {
+        noMsg = document.createElement('p');
+        noMsg.className = 'no-notif-msg';
+        noMsg.setAttribute('role', 'status');
+        noMsg.setAttribute('aria-live', 'polite');
+        noMsg.textContent = 'No notifications found.';
+        container.appendChild(noMsg);
+      }
+    } else if (noMsg) {
+      noMsg.remove();
     }
 
+    // update live region
     if (resultCount) {
       resultCount.textContent = `${visible} notification${visible === 1 ? '' : 's'} found.`;
     }
+    // toggle skip-link visibility
+    if (skipLink) {
+      skipLink.setAttribute('aria-hidden', visible === 0 ? 'true' : 'false');
+    }
   });
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
   renderFullNotifications();

@@ -10,7 +10,7 @@
 
 <body>
   <!-- Skip link for WCAG compliance (keyboard users can jump to main content) -->
-  <a class="sr-only-focusable" href="#main-content">Skip to main content</a>
+  <a class="sr-only-focusable skip-to-main" href="#main-content">Skip to main content</a>
 
   <!-- Fixed sidebar navigation -->
   <nav aria-label="Main navigation">
@@ -136,9 +136,21 @@
             <p
               id="course-details-result-count"
               class="sr-only"
+              role="status"
               aria-live="polite"
+              aria-atomic="true"
             ></p>
         </div>
+        <!-- Skip-to-results link, initially hidden -->
+        <a
+          href="#session-results"
+          class="sr-only-focusable skip-to-results"
+          aria-hidden="true"
+          tabindex="-1"
+        >
+          Skip to sessions
+        </a>
+
         <!-- RIGHT: Notification + Profile -->
         <div class="header-right">
             <!-- Notification bell -->
@@ -174,7 +186,7 @@
                 </button>
               </div>
             
-              <ul id="notification-list"></ul>
+              <ul id="notification-list" role="list" aria-label="Notifications"></ul>
             
               <button
                 type="button"
@@ -205,7 +217,7 @@
     </ol>
   </nav>
   <!-- MAIN CONTENT AREA -->
-  <main id="main-content" class="content-wrapper" role="main">
+  <main id="main-content" tabindex="-1" class="content-wrapper" role="main">
 
     <div id="screen-reader-intro" class="sr-only" aria-live="polite" role="status"></div>
     <section
@@ -249,8 +261,16 @@
         </tbody>
       </table>
 
-      <h3>Current examinations of this course — Not Registered</h3>
-      <div class="exam-list" role="region" aria-label="Available exam sessions">
+      <h3 id="sessions-heading">
+        Current examinations of this course — Not Registered
+      </h3>
+      <div
+        id="session-results"
+        class="exam-list"
+        role="region"
+        aria-labelledby="sessions-heading"
+        tabindex="-1"
+      >
         <!-- injected by JS -->
       </div>
       <!-- hidden live-region for registration confirmation -->

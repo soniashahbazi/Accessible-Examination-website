@@ -40,119 +40,111 @@ function getDeadlineLabel(date) {
     return { label: 'Expired',  class: 'expired',  icon: 'expired.svg' };
   }
 
-  // count whole days difference, ignoring time‐of‐day
   const diffDays = Math.floor(ms / DAY_MS);
-
   if (diffDays <= 3) {
     return { label: 'Urgent',   class: 'urgent',   icon: 'urgent.png' };
   } else if (diffDays <= 7) {
     return { label: 'Upcoming', class: 'upcoming', icon: 'upcoming.png' };
-  } else {
-    return null;
   }
+
+  return null;
 }
 
 export function renderUpcomingRegistrations() {
   const tbody = document.getElementById('registration-deadlines-tbody');
-  if (!tbody) {
-    console.error('Cannot find #registration-deadlines-tbody');
-    return;
-  }
   tbody.innerHTML = '';
 
-  // Only include exams whose registration window is currently open
   const all = getAvailableExams({ onlyActive: true });
   const map = new Map();
   for (const e of all) {
-    if (
-      !map.has(e.id) ||
-      new Date(map.get(e.id).registrationDeadline) >
-        new Date(e.registrationDeadline)
-    ) {
+    if (!map.has(e.id) || new Date(map.get(e.id).registrationDeadline) > new Date(e.registrationDeadline)) {
       map.set(e.id, e);
     }
   }
 
-  Array.from(map.values())
-    .sort(
-      (a, b) =>
-        new Date(a.registrationDeadline) - new Date(b.registrationDeadline)
-    )
-    .forEach((e) => {
-      const deadline = e.registrationDeadline
-        ? new Date(e.registrationDeadline)
-        : null;
-      const deadlineStr = formatDateTime(deadline);
-      const { label, class: cls, icon } = getDeadlineLabel(deadline) || {};
+  const exams = Array.from(map.values())
+    .sort((a, b) => new Date(a.registrationDeadline) - new Date(b.registrationDeadline));
 
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>
-          <span class="exam-name">${e.title}</span>
-          ${
-            label
-              ? `<img src="icons/${icon}" class="exam-icon ${cls}-icon" alt="${label}">
-                 <span class="exam-${cls}" aria-hidden="true">${label}</span>`
-              : ''
-          }
-        </td>
-        <td>${deadlineStr}</td>
-        <td>
-          <a
-            href="CourseDetails.html?course=${e.id}"
-            class="btn register-btn"
-            aria-label="Register for ${e.title}"
-          >Register Now</a>
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
+  const skipReg = document.querySelector('.skip-to-results[href="#registration-results"]');
+  if (exams.length === 0) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td colspan="3">No upcoming registration deadlines found.</td>`;
+    tbody.appendChild(tr);
+    if (skipReg) skipReg.style.display = 'none';
+    return;
+  } else {
+    if (skipReg) skipReg.style.display = '';
+  }
+
+  exams.forEach((e) => {
+    const deadline = new Date(e.registrationDeadline);
+    const deadlineStr = formatDateTime(deadline);
+    const { label, class: cls, icon } = getDeadlineLabel(deadline) || {};
+
+    const tr = document.createElement('tr');
+    tr.setAttribute('tabindex', '-1');
+    tr.setAttribute('role', 'row');
+    tr.innerHTML = `
+      <td>
+        <span class="exam-name">${e.title}</span>
+        ${label ? `<img src="icons/${icon}" class="exam-icon ${cls}-icon" alt="${label}"><span class="exam-${cls}" aria-hidden="true">${label}</span>` : ''}
+      </td>
+      <td>${deadlineStr}</td>
+      <td>
+        <a id="register-${e.id}" href="CourseDetails.html?course=${e.id}" class="btn register-btn" aria-labelledby="course-${e.id} date-${e.id} register-${e.id}">
+          Register
+        </a>
+        <span id="course-${e.id}" class="sr-only">${e.title}</span>
+        <span id="date-${e.id}" class="sr-only">${deadlineStr}</span>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
 }
 
 export function renderUpcomingDeregistrations() {
   const tbody = document.getElementById('deregistration-deadlines-tbody');
-  if (!tbody) {
-    console.error('Cannot find #deregistration-deadlines-tbody');
-    return;
-  }
   tbody.innerHTML = '';
 
-  getRegisteredExams()
+  const exams = getRegisteredExams()
     .filter(e => e.deregistrationDeadline && new Date(e.deregistrationDeadline) >= TODAY)
-    .sort(
-      (a, b) =>
-        new Date(a.deregistrationDeadline) -
-        new Date(b.deregistrationDeadline)
-    )
-    .forEach((e) => {
-      const deadline = e.deregistrationDeadline
-        ? new Date(e.deregistrationDeadline)
-        : null;
-      const deadlineStr = formatDateTime(deadline);
-      const { label, class: cls, icon } = getDeadlineLabel(deadline) || {};
+    .sort((a, b) => new Date(a.deregistrationDeadline) - new Date(b.deregistrationDeadline));
 
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>
-          <span class="exam-name">${e.title}</span>
-          ${
-            label
-              ? `<img src="icons/${icon}" class="exam-icon ${cls}-icon" alt="${label}">
-                 <span class="exam-${cls}" aria-hidden="true">${label}</span>`
-              : ''
-          }
-        </td>
-        <td>${deadlineStr}</td>
-        <td>
-          <button
-            class="btn deregister-btn"
-            data-id="${e.id}"
-            aria-label="Deregister from ${e.title}"
-          >Deregister</button>
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
+  const skipDereg = document.querySelector('.skip-to-results[href="#deregistration-results"]');
+  if (exams.length === 0) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td colspan="3">No upcoming deregistration deadlines found.</td>`;
+    tbody.appendChild(tr);
+    if (skipDereg) skipDereg.style.display = 'none';
+    return;
+  } else {
+    if (skipDereg) skipDereg.style.display = '';
+  }
+
+  exams.forEach((e) => {
+    const deadline = new Date(e.deregistrationDeadline);
+    const deadlineStr = formatDateTime(deadline);
+    const { label, class: cls, icon } = getDeadlineLabel(deadline) || {};
+
+    const tr = document.createElement('tr');
+    tr.setAttribute('tabindex', '-1');
+    tr.setAttribute('role', 'row');
+    tr.innerHTML = `
+      <td>
+        <span class="exam-name">${e.title}</span>
+        ${label ? `<img src="icons/${icon}" class="exam-icon ${cls}-icon" alt="${label}"><span class="exam-${cls}" aria-hidden="true">${label}</span>` : ''}
+      </td>
+      <td>${deadlineStr}</td>
+      <td>
+        <button id="dereg-btn-${e.id}" class="btn deregister-btn" data-id="${e.id}" aria-labelledby="dereg-course-${e.id} dereg-date-${e.id} dereg-btn-${e.id}">
+          Deregister
+        </button>
+        <span id="dereg-course-${e.id}" class="sr-only">${e.title}</span>
+        <span id="dereg-date-${e.id}" class="sr-only">${deadlineStr}</span>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
 }
 
 /**
@@ -163,25 +155,19 @@ function updateDashboard() {
   renderUpcomingDeregistrations();
 
   const allRegs = getRegisteredExams();
-  const countEl = document.getElementById('examCount');
-  if (countEl) countEl.textContent = allRegs.length;
-  // Update singular/plural label for registered exams
-  const examLabelEl = document.getElementById('examLabel');
-  if (examLabelEl) {
-    examLabelEl.textContent = allRegs.length === 1 ? 'exam' : 'exams';
-  }
-
+  const total = allRegs.length;
   const DAY_MS = 24 * 60 * 60 * 1000;
   const upcomingThisWeek = allRegs.filter(e => {
     const start = new Date(e.examStart);
     return start >= TODAY && start <= new Date(TODAY.getTime() + 7 * DAY_MS);
-  });
-  const upcomingCountEl = document.getElementById('upcomingCount');
-  if (upcomingCountEl) upcomingCountEl.textContent = upcomingThisWeek.length;
-  // Update singular/plural label for upcoming exams
-  const upcomingLabelEl = document.getElementById('upcomingLabel');
-  if (upcomingLabelEl) {
-    upcomingLabelEl.textContent = upcomingThisWeek.length === 1 ? 'exam' : 'exams';
+  }).length;
+
+  // Atomic update of the live region to trigger a single announcement
+  const overview = document.getElementById('overview');
+  if (overview) {
+    overview.textContent =
+      `You have ${total} registered ${total === 1 ? 'exam' : 'exams'} and ` +
+      `${upcomingThisWeek} upcoming ${upcomingThisWeek === 1 ? 'exam' : 'exams'}.`;
   }
 }
 

@@ -10,7 +10,7 @@
 
 <body>
   <!-- Skip link for WCAG compliance (keyboard users can jump to main content) -->
-  <a class="sr-only-focusable" href="#main-content">Skip to main content</a>
+  <a class="sr-only-focusable skip-to-main" href="#main-content">Skip to main content</a>
 
   <!-- Fixed sidebar navigation -->
   <nav aria-label="Main navigation">
@@ -140,7 +140,11 @@
               class="sr-only"
               aria-live="polite"
             ></p>
+            <p id="help-match-summary" class="sr-only" aria-live="polite"></p>
+
         </div>
+
+        <a id="skip-to-results" class="sr-only-focusable skip-to-results" href="#help-result-target" tabindex="-1" aria-hidden="true">Skip to results</a>
 
         <!-- RIGHT: Notification + Profile -->
         <div class="header-right">
@@ -177,7 +181,7 @@
                 </button>
               </div>
             
-              <ul id="notification-list"></ul>
+              <ul id="notification-list" role="list" aria-label="Notifications"></ul>
             
               <button
                 type="button"
@@ -199,8 +203,9 @@
         </div>
     </div>
   </header>
-  <!-- Place this AFTER your header in the body -->
-  <main id="main-content" class="content-wrapper" role="main">
+
+  <main id="main-content" role="main" tabindex="-1" class="content-wrapper" aria-labelledby="help-page-title">
+    <h1 id="help-page-title" class="sr-only">Help page</h1>
     <section aria-labelledby="integrated-studying-title" class="institute-section">
       <h2 id="integrated-studying-title" class="institute-title">
         INSTITUT INTEGRATED STUDYING
@@ -209,8 +214,8 @@
       <!-- Row 1: Address | Location -->
       <div class="row">
         <!-- Left Column: Address -->
-        <div class="column">
-          <h3 class="col-heading">Address</h3>
+        <div class="column" tabindex="-1" role="region" aria-labelledby="heading-address">
+          <h3 class="col-heading" id="heading-address">Address</h3>
           <address class="institute-address">
             <div class="address-row">
               <img 
@@ -229,8 +234,8 @@
         </div>
   
         <!-- Right Column: Location -->
-        <div class="column">
-          <h3 class="col-heading">Location</h3>
+        <div class="column" tabindex="-1" role="region" aria-labelledby="heading-location">
+          <h3 class="col-heading" id="heading-location">Location</h3>
           <div class="info-row">
             <img 
               src="icons/location-icon.png" 
@@ -250,8 +255,8 @@
       <!-- Row 2: Email | Phone -->
       <div class="row">
         <!-- Left Column: Email -->
-        <div class="column">
-          <h3 class="col-heading">Email</h3>
+        <div class="column" tabindex="-1" role="region" aria-labelledby="heading-email">
+          <h3 class="col-heading"id=" heading-email">Email</h3>
           <div class="info-row">
             <img class="email-icon" src="icons/email-icon.png" alt="" aria-hidden="true">
             <a href="mailto:integrated-study@jku.at">integrated-study@jku.at</a>
@@ -259,8 +264,8 @@
         </div>
   
         <!-- Right Column: Phone -->
-        <div class="column">
-          <h3 class="col-heading">Phone</h3>
+        <div class="column" tabindex="-1" role="region" aria-labelledby="heading-phone">
+          <h3 class="col-heading"id="heading-phone">Phone</h3>
           <div class="info-row">
             <img 
               src="icons/phone-icon.png" 
@@ -278,6 +283,8 @@
           </div>
         </div>
       </div> <!-- End Row 2 -->
+      <div id="help-result-target" tabindex="-1"></div>
+      <p id="no-results-message" aria-live="polite" class="no-results-message"></p>
     </section>
   </main>
   <script type="module" src="js/main.js"></script>

@@ -231,11 +231,39 @@ export function registerExam(id, startTime = null) {
 export function deregisterExam(id) {
   const ex = getExamById(id);
   if (!ex || (ex.status !== 'registered' && ex.status !== 'pending')) return false;
+
   ex.status = 'deregistered';
-  _blocked.add(ex.id); // block just the base ID
+  _blocked.add(ex.id);
   save();
+
+  // Prepare readable date & time
+  const date = new Date(ex.examStart);
+
+  const msg = `You have successfully deregistered from “${ex.title}”.`;
+
+  // Add notification
+  addNotification({
+    title: 'Deregistration Confirmation',
+    msg
+  });
+
+  // Announce live (and delay the re-render)
+  const liveRegion = document.getElementById('liveNotif') || document.getElementById('reg-confirm');
+  if (liveRegion) {
+    liveRegion.textContent = '';
+    setTimeout(() => {
+      liveRegion.textContent = msg;
+      setTimeout(() => {
+        dispatchAppUpdate(); // ✅ Re-render only after SR speaks
+      }, 400);
+    }, 100);
+  } else {
+    // fallback in case no region found
+    dispatchAppUpdate();
+  }
   return true;
 }
+
 
 /** Exams the student can still register for */
 export function getAvailableExams({ onlyActive = false } = {}) {

@@ -10,7 +10,7 @@
 
 <body>
   <!-- Skip link for WCAG compliance (keyboard users can jump to main content) -->
-  <a class="sr-only-focusable" href="#main-content">Skip to main content</a>
+  <a class="sr-only-focusable skip-to-main" href="#main-content">Skip to main content</a>
 
   <!-- Fixed sidebar navigation -->
   <nav aria-label="Main navigation">
@@ -138,7 +138,11 @@
               aria-live="polite"
               class="sr-only"
             ></p>
+
         </div>
+
+        <a id="skip-to-results" class="sr-only-focusable skip-to-results" href="#accommodation-list" tabindex="-1" aria-hidden="true">Skip to results</a>
+
         <!-- RIGHT: Notification + Profile -->
         <div class="header-right">
             <!-- Notification bell -->
@@ -174,7 +178,7 @@
                 </button>
               </div>
             
-              <ul id="notification-list"></ul>
+              <ul id="notification-list" role="list" aria-label="Notifications"></ul>
             
               <button
                 type="button"
@@ -196,12 +200,14 @@
         </div>
     </div>
   </header>
-  <main id="main-content" class="content-wrapper" role="main">
+  <main id="main-content" role="main" tabindex="-1" class="content-wrapper" aria-labelledby="page-title">
+    <h1 id="page-title" class="sr-only">Accommodations</h1>
+
     <section aria-label="Accommodations" class="accommodation-section">
       
       <!-- Time Accommodation -->
-      <article class="accommodation-group">
-        <h2 class="accommodation-subheading">Time Accommodation:</h2>
+      <article class="accommodation-group" tabindex="-1" role="region" aria-labelledby="heading-time">
+        <h2 class="accommodation-subheading" id="heading-time">Time Accommodation:</h2>
         <ul id="accommodation-list" class="accommodation-list">
           <li>
             <strong>Extra Time Allowed:</strong><img src="icons/time-icon.png" alt="" aria-hidden="true" class="time-icon"> 100% more time
@@ -210,8 +216,8 @@
       </article>
   
       <!-- Technology Accommodations -->
-      <article class="accommodation-group">
-        <h2 class="accommodation-subheading">Technology Accommodations:</h2>
+      <article class="accommodation-group" tabindex="-1" role="region" aria-labelledby="heading-technology">
+        <h2 class="accommodation-subheading" id="heading-technology">Technology Accommodations:</h2>
         <ul class="accommodation-list">
           <li>
             <strong>Laptop Usage:</strong> <img src="icons/laptop-icon.png" alt="" aria-hidden="true" class="laptop-icon"> A laptop can be used for writing during exams.
@@ -223,15 +229,17 @@
       </article>
   
       <!-- Subject-Specific Accommodations -->
-      <article class="accommodation-group">
-        <h2 class="accommodation-subheading">Subject-Specific Accommodations:</h2>
+      <article class="accommodation-group" tabindex="-1" role="region" aria-labelledby="heading-subject">
+        <h2 class="accommodation-subheading" id="heading-subject">Subject-Specific Accommodations:</h2>
         <ul class="accommodation-list">
           <li>
             <strong>Math Exams:</strong><img src="icons/pen-icon.png" alt="" aria-hidden="true" class="pen-icon"> A pen can be used for writing during math exams.
           </li>
         </ul>
       </article>
+      <p id="no-results-message" aria-live="polite" class="no-results-message"></p>
     </section>
+    
   </main>
   <script type="module" src="js/main.js"></script>
   <script type="module" src="js/notifications.js"></script>

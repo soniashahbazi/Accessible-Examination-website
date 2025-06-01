@@ -166,7 +166,7 @@ nav {
   border-radius: 4px;
 
   /* Ensure good contrast, borders, etc. as needed */
-  width: 470px;      /* matches Figma's fixed width */
+  width: 450px;      /* matches Figma's fixed width */
   height: 50px;      /* matches Figma's fixed height */
   box-sizing: border-box;
   font-size: 18px;
@@ -357,7 +357,12 @@ button.notification-bell:focus {
   font-size: 24px;
    
 }
-
+.fallback-row td {
+  font-style: italic;
+  color: var(--primary-text);
+  font-weight: 700;
+  background-color: var(--primary-wh-bg);
+}
 .view-all-link {
   display: inline-flex;
   align-items: center;
@@ -542,6 +547,12 @@ a.btn {
   flex: 1 1 200px;
   margin-left: 6rem;
 }
+.column.keyboard-focused:focus {
+  outline: 3px solid #005ea5;
+  border-radius: 4px;
+  scroll-margin-top: 2rem;
+}
+
 
 /* Subheadings for each content block */
 .col-heading {
@@ -613,6 +624,20 @@ address {
 .accommodation-group {
   margin-bottom: 2rem; /* spacing between groups */
 }
+.accommodation-group.keyboard-focused:focus {
+  outline: 2px solid var(--primary-focus);
+  border-radius: 6px;
+  scroll-margin-top: 2rem;
+}
+.no-results-message {
+  font-weight: bold;
+  color: var(--primary-text);
+  padding: 1rem;
+  text-align: center;
+  font-size: 20px;
+}
+
+
 
 /* Specific background color for the first and third sections */
 .accommodation-group:nth-of-type(1),
@@ -1420,7 +1445,8 @@ th[aria-sort="descending"] .sort-icon {
   background-color: #fff;
   color: var(--primary-focus);
 }
-#confirmYes:focus {
+
+#confirmYes:focus, #confirmYes.active{
   outline: 2px solid var(--primary-focus);
   outline-offset: 2px;
 }
@@ -1429,7 +1455,8 @@ th[aria-sort="descending"] .sort-icon {
 #confirmNo:hover {
   background-color: var(--primary-wh-bg);
 }
-#confirmNo:focus {
+
+#confirmNo:focus, #confirmNo.active {
   outline: 2px solid var(--dark-text);
   outline-offset: 2px;
 }
@@ -1646,18 +1673,38 @@ button[aria-disabled="true"]:focus {
   white-space: nowrap;
   border: 0;
 }
-.sr-only-focusable:focus,
-.sr-only-focusable:active {
-  position: static !important;
-  width: auto; height: auto;
-  clip: auto;
-  margin: 1rem;
+.skip-to-main:focus {
+  position: fixed !important;
+  top: 4.5rem; 
+  left: 4rem;
+  z-index: 9999;
   padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  background-color: var(--accent-color);
+  border: 1px solid var(--primary-focus);
+  color: var(--primary-focus);
+  clip: auto;
+  width: auto;
+  height: auto;
   overflow: visible;
-  background: var(--primary-wh-bg);
-  color: var(--primary-text);
-  z-index: 1000;
 }
+
+.skip-to-results:focus {
+  position: static !important;
+  margin: 1rem 2rem;
+  padding: 0.75rem 0.25rem;
+  font-size: 14px;
+  background-color: var(--primary-wh-bg);
+  border: 1px solid var(--primary-focus);
+  color: var(--primary-text);
+  clip: auto;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  display: inline-block;
+}
+
 
 /*end of course detail style*/
 
