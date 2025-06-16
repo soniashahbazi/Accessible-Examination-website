@@ -2044,6 +2044,64 @@ button.notification-bell:disabled img {
 }
 
 /* Responsive adjustments */
+@media (max-width: 1270px) {
+  .welcome-heading {
+    font-size: 30px;
+  }
+  .header-middle input[type="search"] {
+    width: 400px; /* Make search bar full width */
+  }
+
+}
+@media (max-width: 1243px) {
+
+  .header-middle input[type="search"] {
+    width: 350px; /* Make search bar full width */
+  }
+}  
+@media (max-width: 1180px) {
+
+  .header-middle input[type="search"] {
+    width: 300px; /* Make search bar full width */
+  }
+  .welcome-heading {
+    font-size: 28px;
+  }
+
+}
+
+@media (max-width: 1170px) {    
+  /* .exam-registration-heading  */
+  nav {
+    width: 270px;
+    font-size: 20px;
+  } 
+  .view-register-btn1 {
+    padding: 0.75rem .25rem; /* Adjust padding */  
+  }
+
+  .status-badge.not-registered img {
+    width: 7px; 
+    height: 7px; 
+  }
+  .status-badge.pending img{
+    width: 7px; 
+    height: 7px; 
+  }
+  .status-badge.registered img{
+    width: 7px; 
+    height: 7px; 
+  }
+
+}
+
+@media (max-width: 1115px) {
+  .header-middle input[type="search"] {
+    width: 250px; /* Make search bar full width */
+  }
+
+}
+
 @media (max-width: 768px) {
   nav {
     position: static;
@@ -2064,14 +2122,5 @@ button.notification-bell:disabled img {
   .header-middle input[type="search"] {
     width: 100%; /* Make search bar full width */
   }
-}
-/* Adjust for smaller screens if needed */
-@media (max-width: 768px) {
-  .week-table thead {
-    font-size: 0.9rem;
-  }
-  .week-table th,
-  .week-table td {
-    padding: 0.5rem;
-  }
+
 }
