@@ -2070,6 +2070,53 @@ button.notification-bell:disabled img {
 
 }
 
+@media (max-width: 1180px) {
+  nav {
+    width: 270px;
+    font-size: 20px;
+  }
+  .content-wrapper {
+    margin-left: 270px; 
+  }
+  .top-header{
+    margin-left: 270px; 
+  }
+  .my-exams-section{
+    padding: 1rem;
+  }
+    .table-container {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  .style-one {
+    width: 100%;
+    font-size: 15px;
+  }
+  .style-one th,
+  .style-one td {
+    padding: 0.5rem 0.3rem;
+    font-size: 14px;
+  }
+  .status-badge.not-registered img {
+    width: 7px; 
+    height: 7px; 
+  }
+  .status-badge.pending img{
+    width: 7px; 
+    height: 7px; 
+  }
+  .status-badge.registered img{
+    width: 7px; 
+    height: 7px; 
+  }
+  .calendar-section{
+    padding: 0 1rem; 
+  }
+  .day-table .time-column {
+    width: .75%;
+  }
+
+}
 @media (max-width: 1170px) {    
   /* .exam-registration-heading  */
   nav {
